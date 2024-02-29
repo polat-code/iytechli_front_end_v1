@@ -1,0 +1,117 @@
+html,body{
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.mynav{
+    color: #fff; 
+}
+
+@media (max-width: 768px) {
+    .custom-text {
+        font-size: 12px;
+    }
+}
+.mynav li a {
+    color: black;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    border-radius: 5px;
+    padding: 8px 5px;
+    font-size: 16px;
+    line-height: 1.9;
+}
+
+.mynav li a.active{
+    font-weight: bold;
+}
+
+.mynav li a:hover{
+    background: #C8BCF6;
+    
+}
+
+.mynav li a i{
+    width: 25px;
+    text-align: center;
+}
+
+.new-icon-btn {
+    background-color: #D9D9D9;
+    color: black;
+    border: #535151;
+}
+
+/* For responsive text */
+
+.responsive-text {
+    font-size: 1rem; /* Default font size */
+}
+
+@media (min-width: 576px) {
+    .my-post-photo-flex-container {
+      justify-content: space-around !important;
+    }
+  }
+
+@media (min-width: 576px) {
+    .responsive-text {
+        font-size: 1rem; /* Larger font size on small screens and up */
+    }
+}
+
+/* @media (min-width: 768px) {
+    .responsive-text {
+        font-size: 1.25rem; /* Even larger font size on medium screens and up 
+    }
+}
+*/
+
+@media (min-width: 992px) {
+    .responsive-text {
+        font-size: 1.25rem; /* Larger font size on large screens and up */
+    }
+}
+
+@media (min-width: 1200px) {
+    .responsive-text {
+        font-size: 1.25rem; /* Largest font size on extra large screens and up */
+    }
+}
+
+
+
+/* responsive new post size */
+
+.responsive-new-post-size {
+    width: 360px; /* Default font size */
+}
+
+@media (min-width: 576px) {
+    .responsive-new-post-size {
+        width: 360px !important;
+    }
+  }
+
+
+@media (min-width: 768px) {
+    .responsive-new-post-size {
+        width: 546px !important; 
+    }
+}
+
+
+@media (min-width: 992px) {
+    .responsive-new-post-size {
+        width: 546px !important; /* Larger font size on large screens and up */
+    }
+}
+
+@media (min-width: 1200px) {
+    .responsive-new-post-size {
+        width: 640px !important; /* Largest font size on extra large screens and up */
+    }
+}

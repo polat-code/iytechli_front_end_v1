@@ -1,0 +1,8 @@
+.compliment-link {
+    text-decoration: none;
+    color: black;
+}
+.compliment-link:hover {
+    text-decoration: underline;
+
+}

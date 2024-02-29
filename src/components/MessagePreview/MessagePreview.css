@@ -1,0 +1,22 @@
+.time-definition {
+    font-size: 10px;
+}
+
+.message {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.message-font-size {
+    font-size: 0.75rem; /* Larger font size on small screens and up */
+}
+
+@media (min-width: 576px) {
+    .message-font-size {
+        font-size: 0.9rem; /* Larger font size on small screens and up */
+    }
+}
+.message:hover, .message:active {
+    background-color: #C8BCF6; /* Change background color on hover and active */
+}
