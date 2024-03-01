@@ -13,6 +13,7 @@ import { putUserInfo } from "./redux/userSlice";
 import SoonPage from "./components/SoonPage/SoonPage";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
+import UserProfilePublic from "./components/UserProfilePublic/UserProfilePublic";
 
 function App() {
   // Fake data injection
@@ -54,6 +55,7 @@ function App() {
       <Route path="/iyte-car" element={<SoonPage pageName={"İyte Araç"} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/user-profile-public" element={<UserProfilePublic />} />
     </Routes>
   );
 }
