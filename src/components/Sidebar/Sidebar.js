@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen }) => {
   useEffect(() => {
     setName(user.name);
     setSurname(user.surname);
-    setEmail(setEmail);
+    setEmail(user.email);
     const anonymousElement = document.querySelector("#anonymous");
     setActiveElement(anonymousElement);
     anonymousElement.classList.add("active");
@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen }) => {
       activeElement.classList.remove("active");
       setActiveElement(myMessageElement);
     }
-    navigation("my-messages");
+    navigation("/my-messages");
   };
   const handleIyteCar = () => {
     const iyteCarElement = document.querySelector("#iytecar");
@@ -104,7 +104,7 @@ const Sidebar = ({ isOpen }) => {
       activeElement.classList.remove("active");
       setActiveElement(iyteCarElement);
     }
-    navigation("iyte-car");
+    navigation("/iyte-car");
   };
   const handleLogout = () => {
     navigation("/login");
@@ -138,7 +138,7 @@ const Sidebar = ({ isOpen }) => {
 
       <ul className="mynav nav nav-pills flex-column mb-auto">
         <li className="nav-item mb-3">
-          <a id="anonymous" href="" className="" onClick={handleAnonymous}>
+          <a id="anonymous" href="#" className="" onClick={handleAnonymous}>
             <img src={anonimPhoto} className="p-1" alt="" />
             <span className="ms-2">Anonimler</span>
           </a>
