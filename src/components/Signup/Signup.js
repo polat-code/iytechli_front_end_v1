@@ -5,6 +5,7 @@ import animePhoto from "../../images/anime_photo.svg";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { putUserInfo } from "../../redux/userSlice";
+import ToastNotification from "../ToastNotification/ToastNotification";
 function Signup() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -13,11 +14,51 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
-  const dispatch = useDispatch();
+  // Toast Notification
+  const [toastShow, setToastShow] = useState(false);
+  const [isSomeBlank, setIsSomeBlank] = useState(false);
+  const [isNotValidEmail, setIsNotValidEmail] = useState(false);
+  const [isNotValidTelephone, setIsNotValidTelephone] = useState(false);
+
+  //const dispatch = useDispatch();
   const navigation = useNavigate();
   //const selector = useSelector((state) => state.user.user);
 
   const handleSignUp = () => {
+    // Reset all statuses of states
+    setIsSomeBlank(false);
+    setToastShow(false);
+    setIsNotValidEmail(false);
+    setIsNotValidTelephone(false);
+
+    // Blank Check
+    if (name && surname && email && telephone && password && passwordRepeat) {
+      const emailExtension = email.split("@")[1];
+
+      // Email check
+      if (
+        emailExtension === "std.iyte.edu.tr" ||
+        emailExtension === "iyte.edu.tr"
+      ) {
+        // Telephone Check
+        if (telephone.length == 10) {
+        } else {
+          setIsNotValidEmail(true);
+          setToastShow(true);
+        }
+        navigation("/email-verification");
+      } else {
+        setIsNotValidTelephone(false);
+        setToastShow(true);
+      }
+    } else {
+      // Show an warning there is at least one blank field
+      setIsSomeBlank(true);
+      setToastShow(true);
+    }
+
+    // Redux registration
+    /* 
     dispatch(
       putUserInfo({
         id: "1",
@@ -29,9 +70,9 @@ function Signup() {
         profileStatus: "Public",
       })
     );
+    */
 
     //console.log(selector.name + selector.surname);
-    navigation("/email-verification");
   };
   return (
     <>
@@ -87,7 +128,7 @@ function Signup() {
             </div>
             <div className="relative-div d-flex flex-column email responsive-input-grup">
               <label htmlFor="telephone" className="email-text mt-3">
-                Telefon numarası
+                Telefon numarası (Lütfen +90 eklemeyiniz )
               </label>
               <input
                 type="text"
@@ -134,6 +175,34 @@ function Signup() {
                 <img src={loginButtonIconPhoto} alt="" />
               </button>
             </div>
+
+            {isNotValidTelephone && (
+              <ToastNotification
+                title={"Telefon Numarası"}
+                message={"Lütfen telefon numaranıza +90 eklemeyiniz."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+            {isSomeBlank && (
+              <ToastNotification
+                title={"Boş Alan"}
+                message={"Lütfen Boş bir alan bırakmadan doldurun."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+            {isNotValidEmail && (
+              <ToastNotification
+                title={"Email Hatası"}
+                message={"Lütfen Okul Emailinizi giriniz..."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
           </div>
         </div>
 
