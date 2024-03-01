@@ -16,6 +16,7 @@ import Signup from "./components/Signup/Signup";
 import UserProfilePublic from "./components/UserProfilePublic/UserProfilePublic";
 import EmailVerification from "./components/EmailVerification/EmailVerification";
 import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
+import RenewPassword from "./components/RenewPassword/RenewPassword";
 
 function App() {
   // Fake data injection
@@ -60,6 +61,7 @@ function App() {
       <Route path="/user-profile-public" element={<UserProfilePublic />} />
       <Route path="/email-verification" element={<EmailVerification />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
+      <Route path="/renew-password" element={<RenewPassword />} />
     </Routes>
   );
 }
