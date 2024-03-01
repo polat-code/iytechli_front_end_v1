@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import loginButtonIconPhoto from "../../images/icons/login_button_icon.svg";
 import animePhoto from "../../images/anime_photo.svg";
 import { useNavigate } from "react-router-dom";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function Login() {
   const navigation = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [isToastShow, setIsToastShow] = useState(false);
+  const [isInputsBlank, setIsInputsBlank] = useState(false);
+
   const handleLogin = () => {
-    navigation("/anonymous", { state: { login: "success" } });
+    // Reset InputsBlank Notification status
+    setIsInputsBlank(false);
+    setIsToastShow(false);
+
+    if (email && password) {
+      // Send to database and check whether it is correct or not.
+      navigation("/anonymous", { state: { login: "success" } });
+    } else {
+      setIsInputsBlank(true);
+      setIsToastShow(true);
+      // Show a toast notification named email and password cant be empty
+    }
   };
   return (
     <>
@@ -31,6 +49,7 @@ function Login() {
                 name=""
                 id="email"
                 className="border rounded-2 border-secondary p-2 email-text"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -43,6 +62,7 @@ function Login() {
                 name=""
                 id="password"
                 className="border rounded-2 border-secondary p-2 password-text"
+                onClick={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="relative-div d-flex justify-content-center mt-5">
@@ -67,6 +87,15 @@ function Login() {
                 Ücretsiz Kaydol.
               </a>
             </div>
+            {isInputsBlank && (
+              <ToastNotification
+                title={"Kullanıcı Adı ve Şifre"}
+                message={"Lütfen Kullancı adınızı ve şifrenizi giriniz!"}
+                toastShow={isToastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setIsToastShow(!isToastShow)}
+              />
+            )}
           </div>
         </div>
 

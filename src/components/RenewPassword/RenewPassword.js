@@ -101,53 +101,53 @@ function RenewPassword() {
                 <img src={loginButtonIconPhoto} alt="" />
               </button>
             </div>
+
+            {isPasswordBlank && (
+              <ToastNotification
+                title={"Şifre"}
+                message={"Şifre Boş Olamaz!"}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+                key={1}
+              />
+            )}
+            {isNotEnoughLength && (
+              <ToastNotification
+                title={"Şifre"}
+                message={"Şifre en az 8 karakterden oluşması lazım."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+            {isNotHaveValidChat && (
+              <ToastNotification
+                title={"Şifre"}
+                message={"Şifre de boşluk bulunamaz."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+
+            {isPasswordsNotEqual && (
+              <ToastNotification
+                title={"Şifre"}
+                message={
+                  "Şifreler ayni değil. Lütfen şifrenizi 2 defa doğru giriniz."
+                }
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
           </div>
         </div>
 
         <div className="relative-div">
           <img src={animePhoto} alt="" className="img-fluid anime-photo-size" />
         </div>
-
-        {isPasswordBlank && (
-          <ToastNotification
-            title={"Şifre"}
-            message={"Şifre Boş Olamaz!"}
-            toastShow={toastShow}
-            toastType={"warning"}
-            toggleToastShow={() => setToastShow(!toastShow)}
-            key={1}
-          />
-        )}
-        {isNotEnoughLength && (
-          <ToastNotification
-            title={"Şifre"}
-            message={"Şifre en az 8 karakterden oluşması lazım."}
-            toastShow={toastShow}
-            toastType={"warning"}
-            toggleToastShow={() => setToastShow(!toastShow)}
-          />
-        )}
-        {isNotHaveValidChat && (
-          <ToastNotification
-            title={"Şifre"}
-            message={"Şifre de boşluk bulunamaz."}
-            toastShow={toastShow}
-            toastType={"warning"}
-            toggleToastShow={() => setToastShow(!toastShow)}
-          />
-        )}
-
-        {isPasswordsNotEqual && (
-          <ToastNotification
-            title={"Şifre"}
-            message={
-              "Şifreler ayni değil. Lütfen şifrenizi 2 defa doğru giriniz."
-            }
-            toastShow={toastShow}
-            toastType={"warning"}
-            toggleToastShow={() => setToastShow(!toastShow)}
-          />
-        )}
       </div>
     </>
   );
