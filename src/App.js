@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { putUserInfo } from "./redux/userSlice";
 import SoonPage from "./components/SoonPage/SoonPage";
+import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
 
 function App() {
   // Fake data injection
@@ -50,6 +52,8 @@ function App() {
       <Route path="/departments" element={<SoonPage pageName={"Bölümler"} />} />
       <Route path="/places" element={<SoonPage pageName={"Mekanlar"} />} />
       <Route path="/iyte-car" element={<SoonPage pageName={"İyte Araç"} />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 }

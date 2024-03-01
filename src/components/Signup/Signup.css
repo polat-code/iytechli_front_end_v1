@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+    font-style: normal;
+    
+}
+.welcome-back-style {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 300;
+}
+.email-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 300;
+}
+.password-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 300;
+}
+.btn-login {
+    font-family: 'Poppins';
+    font-style: normal;
+    background-color: #C8BCF6;
+    font-size: 1rem;
+}
+.sign-up-button {
+    color:black;
+    font-size: 14px;
+    
+}
+.sign-up-button:hover {
+    color: #8e7cd4;
+}
+.account-message {
+    font-size: 14px;
+}
+.relative-div {
+    position: relative; /* İçerik, arkaplandan üstte olmalı */
+    z-index: 1;
+
+}
+.responsive-input-grup {
+    width: 300px;
+}
+
+@media (min-width: 576px) {
+    .responsive-input-grup {
+        width: 400px;
+    }
+  }
+
+
+.color-block-background {
+    position: fixed;
+    width: 100%; /* Sağdan %40 genişlik */
+    height: 50%; /* Üstten %50 yükseklik */
+    top: 0; /* Üst kenardan başlar */
+    right: 0; /* Sağ kenardan başlar */
+    background-color: #C8BCF6; /* Burada istediğiniz rengi kullanın */
+    z-index: -1; /* İçerik üzerinde görünmemesi için */
+    border-bottom-left-radius: 50px; /* Sol alt köşeyi yuvarlak yapar */
+}
+
+
