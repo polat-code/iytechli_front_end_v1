@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Anonymous.css";
 import Post from "../Post/Post";
 import MainContainer from "../MainContainer/MainContainer";
@@ -6,17 +6,40 @@ import Sidebar from "../Sidebar/Sidebar";
 import ContentContainer from "../ContentContainer/ContentContainer";
 import PageTitle from "../PageTitle/PageTitle";
 import Advertisement from "../Advertisement/Advertisement";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function Anonymous() {
+  // Sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  // Notification
+  const [toastShow, setToastShow] = useState(false);
+  const toggleToastShow = () => {
+    setToastShow(!toastShow);
+  };
+
+  /* 
+  const [showToastNotification,setShowToastNotification] = useState(false);
+
+  const location = useLocation();
+  useEffect(() => {
+    const receivedData = location.state;
+    if (receivedData.login) {
+      setShowToastNotification(true);
+
+    }
+  }, [receivedData]);
+  */
+
+  // New Anonymous post navigation
   const newAnonymousPost = () => {
-    navigation("/new-anonymous-post");
+    setToastShow(!toastShow);
+    //navigation("/new-anonymous-post");
   };
   return (
     <>
@@ -42,7 +65,7 @@ function Anonymous() {
               {/* Button */}
               <div class="d-flex justify-content-end m-3">
                 <a
-                  href="../new_anonymous_post/index.html"
+                  href="#"
                   class="btn btn-primary text-light pt-2"
                   onClick={newAnonymousPost}
                 >
@@ -104,6 +127,13 @@ function Anonymous() {
               {/* Post 2 END*/}
             </div>
             {/* Content END */}
+            <ToastNotification
+              message={"Tekrardan seni gördüğüme memnun oldum İytechli..."}
+              title={"Hoşgeldin.."}
+              toastShow={toastShow}
+              toggleToastShow={toggleToastShow}
+              toastType={"success"}
+            />
 
             {/* Reklam */}
             <Advertisement />

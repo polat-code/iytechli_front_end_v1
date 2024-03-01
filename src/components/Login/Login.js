@@ -2,9 +2,13 @@ import React from "react";
 import "./Login.css";
 import loginButtonIconPhoto from "../../images/icons/login_button_icon.svg";
 import animePhoto from "../../images/anime_photo.svg";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const handleLogin = () => {};
+  const navigation = useNavigate();
+  const handleLogin = () => {
+    navigation("/anonymous", { state: { login: "success" } });
+  };
   return (
     <>
       <div className="relative-div color-block-background"></div>
