@@ -14,6 +14,7 @@ import SoonPage from "./components/SoonPage/SoonPage";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import UserProfilePublic from "./components/UserProfilePublic/UserProfilePublic";
+import EmailVerification from "./components/EmailVerification/EmailVerification";
 
 function App() {
   // Fake data injection
@@ -56,6 +57,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/user-profile-public" element={<UserProfilePublic />} />
+      <Route path="/email-verification" element={<EmailVerification />} />
     </Routes>
   );
 }
