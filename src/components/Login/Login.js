@@ -54,8 +54,12 @@ function Login() {
                 <img src={loginButtonIconPhoto} alt="" />
               </button>
             </div>
-
-            <div className="relative-div d-flex flex-row justify-content-center mt-4">
+            <div className="relative-div d-flex justify-content-center mt-3">
+              <a href="#" className="forget-password-button">
+                Şifremi Unuttum?
+              </a>
+            </div>
+            <div className="relative-div d-flex flex-row justify-content-center mt-4 mb-lg-0 mb-5">
               <span className="account-message me-3">
                 Henüz bir hesabım yok?
               </span>

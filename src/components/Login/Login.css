@@ -37,6 +37,15 @@ body, html {
 .sign-up-button:hover {
     color: #8e7cd4;
 }
+.forget-password-button:hover {
+    color: red;
+}
+.forget-password-button {
+    color:black;
+    font-size: 14px;
+    
+}
+
 .account-message {
     font-size: 14px;
 }
