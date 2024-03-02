@@ -23,23 +23,22 @@ function Anonymous() {
     setToastShow(!toastShow);
   };
 
+  // TODO If user send a post then we have to show a toast message
   /* 
-  const [showToastNotification,setShowToastNotification] = useState(false);
+  const [showToastNotification, setShowToastNotification] = useState(false);
 
   const location = useLocation();
+  const receivedData = location.state;
   useEffect(() => {
-    const receivedData = location.state;
-    if (receivedData.login) {
-      setShowToastNotification(true);
-
+    if (receivedData.login === true) {
+      setToastShow(!toastShow);
+      delete receivedData.login;
     }
-  }, [receivedData]);
+  });
   */
-
   // New Anonymous post navigation
   const newAnonymousPost = () => {
-    setToastShow(!toastShow);
-    //navigation("/new-anonymous-post");
+    navigation("/new-anonymous-post");
   };
   return (
     <>

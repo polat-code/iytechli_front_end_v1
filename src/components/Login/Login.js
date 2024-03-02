@@ -13,6 +13,14 @@ function Login() {
   const [isToastShow, setIsToastShow] = useState(false);
   const [isInputsBlank, setIsInputsBlank] = useState(false);
 
+  const handleForgetPassword = () => {
+    navigation("/forget-password");
+  };
+
+  const handleRegistration = () => {
+    navigation("/signup");
+  };
+
   const handleLogin = () => {
     // Reset InputsBlank Notification status
     setIsInputsBlank(false);
@@ -75,7 +83,11 @@ function Login() {
               </button>
             </div>
             <div className="relative-div d-flex justify-content-center mt-3">
-              <a href="#" className="forget-password-button">
+              <a
+                href="#"
+                className="forget-password-button"
+                onClick={handleForgetPassword}
+              >
                 Şifremi Unuttum?
               </a>
             </div>
@@ -83,7 +95,11 @@ function Login() {
               <span className="account-message me-3">
                 Henüz bir hesabım yok?
               </span>
-              <a href="#" className="sign-up-button fw-bold">
+              <a
+                href="#"
+                className="sign-up-button fw-bold"
+                onClick={handleRegistration}
+              >
                 Ücretsiz Kaydol.
               </a>
             </div>

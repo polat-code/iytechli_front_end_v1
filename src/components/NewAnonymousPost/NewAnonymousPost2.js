@@ -5,12 +5,36 @@ import ContentContainer from "../ContentContainer/ContentContainer";
 import PageTitle from "../PageTitle/PageTitle";
 import "./NewAnonymousPost2.css";
 import Advertisement from "../Advertisement/Advertisement";
+import { useNavigate } from "react-router-dom";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 const NewAnonymousPost2 = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [postDescription, setPostDescription] = useState("");
+  const navigation = useNavigate();
 
+  // Sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // Toast Notification
+  const [isNotValidPost, setIsNotValidPost] = useState(false);
+  const [toastShow, setToastShow] = useState(false);
+
+  const handleNewPostButton = () => {
+    setIsNotValidPost(false);
+    setToastShow(false);
+    if (postDescription.length > 15) {
+      navigation("/anonymous");
+    } else {
+      setIsNotValidPost(true);
+      setToastShow(true);
+    }
+  };
+
+  const handleCancelButton = () => {
+    navigation("/anonymous");
   };
 
   return (
@@ -45,6 +69,8 @@ const NewAnonymousPost2 = () => {
                   id="postDetail"
                   placeholder="Lütfen düşüncelerinizi yazınız..."
                   style={{ height: "120px" }}
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
                 ></textarea>
               </div>
               {/* Post Detail Input END*/}
@@ -85,15 +111,28 @@ const NewAnonymousPost2 = () => {
                 <button
                   type="button"
                   class="btn btn-secondary p-2 px-3 me-3 mt-3"
+                  onClick={handleCancelButton}
                 >
                   İptal Et
                 </button>
                 <button
                   type="button"
                   class="btn btn-success p-2 px-3 ms-3 mt-3"
+                  onClick={handleNewPostButton}
                 >
                   Paylaş
                 </button>
+                {isNotValidPost && (
+                  <ToastNotification
+                    title={"Post Detayı"}
+                    message={
+                      "Post Detayı en az 15 karakterden oluşması gerekiyor. "
+                    }
+                    toastShow={toastShow}
+                    toastType={"warning"}
+                    toggleToastShow={() => setToastShow(!toastShow)}
+                  />
+                )}
               </div>
 
               {/* Save and Cancel Buttons END*/}

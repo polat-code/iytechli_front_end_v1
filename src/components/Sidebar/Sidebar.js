@@ -107,7 +107,7 @@ const Sidebar = ({ isOpen }) => {
     navigation("/iyte-car");
   };
   const handleLogout = () => {
-    navigation("/login");
+    navigation("/");
   };
 
   return (

@@ -1,5 +1,6 @@
 import React from "react";
 import "./Post.css";
+import { useNavigate } from "react-router-dom";
 import anonymousIconPhoto from "../../images/icons/anonymous_icon.svg";
 import postPhoto from "../../images/post_photo.svg";
 import likePostIcon from "../../images/icons/like_post_icon.svg";
@@ -7,10 +8,16 @@ import commentPostIcon from "../../images/icons/comment_post_icon.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
 
 function Post({ content, totalLike, totalComment, images }) {
+  const navigation = useNavigate();
+  const handlePostDetail = () => {
+    navigation("/anonymous-detail");
+  };
+
   return (
     <a
-      href="../anonimler_detail_sikayet/index.html"
+      href="#"
       style={{ textDecoration: "none", color: "black" }}
+      onClick={handlePostDetail}
     >
       <div class="d-flex justify-content-center mb-3">
         <div class="border rounded" style={{ maxWidth: "720px" }}>

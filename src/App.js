@@ -56,7 +56,7 @@ function App() {
       <Route path="/departments" element={<SoonPage pageName={"Bölümler"} />} />
       <Route path="/places" element={<SoonPage pageName={"Mekanlar"} />} />
       <Route path="/iyte-car" element={<SoonPage pageName={"İyte Araç"} />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/user-profile-public" element={<UserProfilePublic />} />
       <Route path="/email-verification" element={<EmailVerification />} />
