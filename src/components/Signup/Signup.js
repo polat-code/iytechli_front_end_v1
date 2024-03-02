@@ -41,14 +41,14 @@ function Signup() {
         emailExtension === "iyte.edu.tr"
       ) {
         // Telephone Check
-        if (telephone.length == 10) {
+        if (telephone.length === 10 && /^\d+$/.test(telephone)) {
+          navigation("/email-verification");
         } else {
-          setIsNotValidEmail(true);
+          setIsNotValidTelephone(true);
           setToastShow(true);
         }
-        navigation("/email-verification");
       } else {
-        setIsNotValidTelephone(false);
+        setIsNotValidEmail(true);
         setToastShow(true);
       }
     } else {
@@ -179,7 +179,9 @@ function Signup() {
             {isNotValidTelephone && (
               <ToastNotification
                 title={"Telefon Numarası"}
-                message={"Lütfen telefon numaranıza +90 eklemeyiniz."}
+                message={
+                  "Lütfen telefon geçerli bir numara giriniz ve numaranızın başına +90 eklemeyiniz."
+                }
                 toastShow={toastShow}
                 toastType={"warning"}
                 toggleToastShow={() => setToastShow(!toastShow)}
