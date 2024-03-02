@@ -8,6 +8,7 @@ import PageTitle from "../PageTitle/PageTitle";
 import Advertisement from "../Advertisement/Advertisement";
 import { useNavigate, useLocation } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
+import ComplimentModal from "../ComplimentModal/ComplimentModal";
 
 function Anonymous() {
   // Sidebar

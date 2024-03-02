@@ -6,3 +6,7 @@
     text-decoration: underline;
 
 }
+.like-icon {
+    transition: opacity 0.3s ease;
+  }
+  
