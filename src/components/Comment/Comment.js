@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Comment.css";
 import userIconPhoto from "../../images/icons/user_icon.svg";
 import commentLikeIconPhoto from "../../images/icons/comment_like_icon.svg";
+import commentLikeIconPhotoActive from "../../images/icons/comment_like_icon_active.svg";
 import commentDislikeIconPhoto from "../../images/icons/comment_dislike_icon.svg";
+import commentDislikeIconPhotoActive from "../../images/icons/comment_dislike_icon_active.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
 
 const Comment = ({
@@ -13,6 +15,16 @@ const Comment = ({
   likeCount,
   dislikeCount,
 }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+
+  const handleCommentDislikeIcon = () => {
+    setIsDisliked(!isDisliked);
+  };
+  const handleCommentLikeIcon = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
     <div className="border-bottom border-top rounded">
       {/* Comment Title */}
@@ -34,15 +46,32 @@ const Comment = ({
       {/* Interactions */}
       <div className="d-flex flex-row justify-content-around mb-3">
         {/* Like */}
-        <div className="d-flex justify-content-center">
-          <img src={commentLikeIconPhoto} alt="" />
+        <div
+          className="d-flex justify-content-center custom-cursor"
+          onClick={handleCommentLikeIcon}
+        >
+          <img
+            src={isLiked ? commentLikeIconPhotoActive : commentLikeIconPhoto}
+            alt=""
+          />
           <span className="ms-2">{likeCount}</span>
         </div>
         {/* Like END */}
 
         {/* Dislike */}
-        <div className="d-flex justify-content-center">
-          <img src={commentDislikeIconPhoto} alt="" />
+        <div
+          className="d-flex justify-content-center custom-cursor"
+          onClick={handleCommentDislikeIcon}
+        >
+          <img
+            src={
+              isDisliked
+                ? commentDislikeIconPhotoActive
+                : commentDislikeIconPhoto
+            }
+            alt=""
+            className="like-icon"
+          />
           <span className="ms-2">{dislikeCount}</span>
         </div>
         {/* Dislike END */}
