@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import anonymousPhoto from "../../images/icons/anonymous_icon.svg";
 import postPhoto from "../../images/post_photo.svg";
-import likePostIconPhoto from "../../images/icons/like_post_icon.svg";
+import likePostIcon from "../../images/icons/like_post_icon.svg";
+import likePostIconActive from "../../images/icons/heard_red.svg";
 import commentPostIconPhoto from "../../images/icons/comment_post_icon.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
 
@@ -18,9 +19,13 @@ import LikeCountModal from "../LikeCountModal/LikeCountModal";
 
 const AnonymousDetail = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const [isLiked, setIsLiked] = useState(false);
+  const handleLikeButton = () => {
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -77,8 +82,14 @@ const AnonymousDetail = () => {
                   {/* Interactions */}
                   <div className="d-flex flex-row justify-content-around mb-3">
                     {/* Like */}
-                    <div className="d-flex justify-content-center">
-                      <img src={likePostIconPhoto} alt="" />
+                    <div
+                      className="d-flex justify-content-center custom-cursor"
+                      onClick={handleLikeButton}
+                    >
+                      <img
+                        alt=""
+                        src={isLiked ? likePostIconActive : likePostIcon}
+                      />
                       <span className="ms-2">10</span>
                     </div>
                     {/* Like END */}
@@ -92,7 +103,7 @@ const AnonymousDetail = () => {
 
                     {/* Compliment */}
                     <a
-                      className="compliment-link"
+                      className="compliment-link custom-cursor"
                       data-bs-toggle="modal"
                       data-bs-target="#compliment_modal"
                     >
@@ -117,7 +128,7 @@ const AnonymousDetail = () => {
                     data-bs-target="#users_like"
                   >
                     <p className="fs-6 m-4">
-                      <span className="fw-bold">10</span>
+                      <span className="fw-bold">10 </span>
                       kişi postu beğendi
                     </p>
                   </a>
