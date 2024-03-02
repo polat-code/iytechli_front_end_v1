@@ -99,7 +99,7 @@ function Post({ content, totalLike, totalComment, images }) {
             <a href="" className="compliment-link">
               <div class="d-flex justify-content-center">
                 <img src={commentPostIcon} alt="" />
-                <span class="ms-3">{totalComment}</span>
+                <span class="ms-2">{totalComment}</span>
               </div>
             </a>
             {/* Comment END */}
@@ -113,7 +113,7 @@ function Post({ content, totalLike, totalComment, images }) {
             >
               <div class="d-flex justify-content-center">
                 <img src={complimentIconPhoto} alt="" />
-                <span class="ms-3">Şikayet Et</span>
+                <span class="ms-2">Şikayet Et</span>
               </div>
             </a>
             {/* Compliment END */}
