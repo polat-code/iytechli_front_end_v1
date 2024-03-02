@@ -9,7 +9,7 @@ function EmailVerification() {
   const navigation = useNavigate();
 
   const handleVerificationCode = () => {
-    navigation("/login");
+    navigation("/");
   };
   return (
     <>
