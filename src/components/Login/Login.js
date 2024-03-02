@@ -70,7 +70,7 @@ function Login() {
                 name=""
                 id="password"
                 className="border rounded-2 border-secondary p-2 password-text"
-                onClick={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="relative-div d-flex justify-content-center mt-5">
