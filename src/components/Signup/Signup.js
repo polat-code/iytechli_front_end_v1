@@ -42,6 +42,7 @@ function Signup() {
       ) {
         // Telephone Check
         if (telephone.length === 10 && /^\d+$/.test(telephone)) {
+          // Trim email and Other things
           navigation("/email-verification");
         } else {
           setIsNotValidTelephone(true);
