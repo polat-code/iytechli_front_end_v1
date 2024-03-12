@@ -20,19 +20,18 @@ export const api = () => {
 export const register = async (user) => {
   try {
     const response = await api().post("/auth/register", user);
-    return response;
+    return { success: true, data: response.data };
   } catch (err) {
-    if (err.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      return {
-        success: false,
-        errorCode: err.response.status,
-        message: err.response.data.message,
-      };
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      return { success: false, message: err.message };
-    }
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};
+export const verifyOtp = async (verificationData) => {
+  try {
+    const response = await api().post("/auth/verify-otp", verificationData);
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
   }
 };

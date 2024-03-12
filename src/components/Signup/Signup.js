@@ -14,6 +14,7 @@ function Signup() {
   const [telephone, setTelephone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Toast Notification
   const [toastShow, setToastShow] = useState(false);
@@ -63,7 +64,7 @@ function Signup() {
               setTelephone(telephone.trim());
 
               // Call register api
-
+              setIsLoading(true);
               const response = await register({
                 name: name,
                 surname: surname,
@@ -71,16 +72,18 @@ function Signup() {
                 phoneNumber: telephone,
                 password: password,
               });
-              console.log(response);
-              if (response.success) {
-                //navigation("/email-verification");
+              setIsLoading(false);
 
+              if (response.success) {
                 // Show error toast notification based on the error code
-                if (response.data.errorCode == 409) {
+                if (response.data.statusCode === 200) {
+                  const data = { email: email, password: password };
+                  navigation("/email-verification", { state: data });
+                } else if (response.data.statusCode === 409) {
                   setAlreadyRegisteredEmail(true);
                   setToastShow(true);
                   // Show toast notification for ALREADY_EXIST error
-                } else if (response.data.errorCode === 411) {
+                } else if (response.data.statusCode === 411) {
                   // Show toast notification for NOT_VALID error (Email not found!)
                   setIsNotSentEmail(true);
                   setToastShow(true);
@@ -225,8 +228,21 @@ function Signup() {
               <button
                 className="btn-login rounded-5 border-1 border-dark py-2 px-4"
                 onClick={handleSignUp}
+                disabled={isLoading}
               >
-                Kayıt Ol
+                {" "}
+                {isLoading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Yükleniyor...
+                  </>
+                ) : (
+                  "Kayıt Ol"
+                )}
                 <img src={loginButtonIconPhoto} alt="" />
               </button>
             </div>
