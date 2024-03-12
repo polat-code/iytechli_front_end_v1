@@ -4,14 +4,20 @@ import loginButtonIconPhoto from "../../images/icons/login_button_icon.svg";
 import animePhoto from "../../images/anime_photo.svg";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
+import { authenticate } from "../../helpers/authApi/authApi";
+import { setToLocalStorage } from "../../helpers/LocalStorage";
 
 function Login() {
   const navigation = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isToastShow, setIsToastShow] = useState(false);
+  const [toastShow, setToastShow] = useState(false);
   const [isInputsBlank, setIsInputsBlank] = useState(false);
+  const [isUserCredentialsInvalid, setIsUserCredentialsInvalid] =
+    useState(false);
+  const [isEmailNotApproved, setIsEmailNotApproved] = useState(false);
 
   const handleForgetPassword = () => {
     navigation("/forget-password");
@@ -21,17 +27,50 @@ function Login() {
     navigation("/signup");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Reset InputsBlank Notification status
+    setToastShow(false);
     setIsInputsBlank(false);
-    setIsToastShow(false);
+    setIsUserCredentialsInvalid(false);
+    setIsUserCredentialsInvalid(false);
+    setIsEmailNotApproved(false);
 
     if (email && password) {
       // Send to database and check whether it is correct or not.
-      navigation("/anonymous", { state: { login: "success" } });
+      setIsLoading(true);
+      const response = await authenticate({
+        email: email,
+        password: password,
+      });
+      setIsLoading(false);
+
+      if (response.success) {
+        if (response.data.statusCode === 200) {
+          // Login and save the authentication token
+          setToLocalStorage("_tkn", JSON.stringify(response.data.data.token));
+          navigation("/anonymous");
+        } else if (response.data.statusCode === 403) {
+          // Username or password is wrong
+          setIsUserCredentialsInvalid(true);
+          setToastShow(true);
+        } else if (response.data.statusCode === 410) {
+          // Email is not approved
+          setIsLoading(true);
+          setIsEmailNotApproved(true);
+          setToastShow(true);
+          const data = { email: email, password: password };
+          setTimeout(() => {
+            navigation("/email-verification", { state: data });
+          }, 3000);
+        }
+      } else {
+        // Show unknown error
+        setIsUserCredentialsInvalid(true);
+        setToastShow(true);
+      }
     } else {
       setIsInputsBlank(true);
-      setIsToastShow(true);
+      setToastShow(true);
       // Show a toast notification named email and password cant be empty
     }
   };
@@ -77,8 +116,20 @@ function Login() {
               <button
                 className="btn-login rounded-5 border-1 border-dark py-2 px-4"
                 onClick={handleLogin}
+                disabled={isLoading}
               >
-                Giriş Yap
+                {isLoading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Yükleniyor...
+                  </>
+                ) : (
+                  "Giriş Yap"
+                )}
                 <img src={loginButtonIconPhoto} alt="" />
               </button>
             </div>
@@ -107,9 +158,30 @@ function Login() {
               <ToastNotification
                 title={"Kullanıcı Adı ve Şifre"}
                 message={"Lütfen Kullancı adınızı ve şifrenizi giriniz!"}
-                toastShow={isToastShow}
+                toastShow={toastShow}
                 toastType={"warning"}
-                toggleToastShow={() => setIsToastShow(!isToastShow)}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+
+            {isEmailNotApproved && (
+              <ToastNotification
+                title={"Onaylanmamış Email"}
+                message={
+                  "Lütfen emailinizi onaylayın. Yönelendiriliyorsunuz..."
+                }
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+            {isUserCredentialsInvalid && (
+              <ToastNotification
+                title={"Yanlış Kullanıcı Adı veya Şifre"}
+                message={"Lütfen doğru kullanıcı adı ve şifre giriniz."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
               />
             )}
           </div>

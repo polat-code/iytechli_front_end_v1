@@ -51,7 +51,7 @@ function Anonymous() {
         />
 
         <div
-          classNameName="vertical-line"
+          className="vertical-line"
           style={{ width: "2px", backgroundColor: "#F5F5F5" }}
         ></div>
         <ContentContainer>

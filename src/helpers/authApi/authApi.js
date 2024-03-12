@@ -35,3 +35,12 @@ export const verifyOtp = async (verificationData) => {
     return { success: false, message: err.message };
   }
 };
+export const authenticate = async (userCredentials) => {
+  try {
+    const response = await api().post("/auth/authenticate", userCredentials);
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};
