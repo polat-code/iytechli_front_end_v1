@@ -1,20 +1,21 @@
 import axios from "axios";
 // get jwt from
 import { getFromLocalStorage } from "../LocalStorage";
+import { useHistory } from "react-router-dom";
 
 const baseAppUrl = "http://localhost:8080/api/v1";
 
-export const api = () => {
-  const token = getFromLocalStorage(process.env.jwtStorageName);
-
+export const api = (navigate) => {
+  const token = getFromLocalStorage("_tkn");
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  return axios.create({
+  const instance = axios.create({
     baseURL: baseAppUrl,
-
     headers,
   });
+
+  return instance;
 };
 
 export const register = async (user) => {

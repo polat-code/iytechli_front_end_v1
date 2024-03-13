@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./Post.css";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "react-bootstrap";
 import anonymousIconPhoto from "../../images/icons/anonymous_icon.svg";
 import postPhoto from "../../images/post_photo.svg";
+import cat_photo from "../../images/cat_photo.avif";
 import likePostIcon from "../../images/icons/like_post_icon.svg";
 import likePostIconActive from "../../images/icons/heard_red.svg";
 import commentPostIcon from "../../images/icons/comment_post_icon.svg";
@@ -14,8 +16,14 @@ function Post({ content, totalLike, totalComment, images }) {
   const navigation = useNavigate();
 
   const [isLiked, setIsLiked] = useState(false);
+  const [showPhoto, setShowPhoto] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
+  };
+  const handlePhotoShow = (image) => {
+    setSelectedImage(image);
+    setShowPhoto(true);
   };
 
   const handlePostDetail = () => {
@@ -24,44 +32,62 @@ function Post({ content, totalLike, totalComment, images }) {
 
   return (
     <div>
-      <div class="d-flex justify-content-center mb-3">
-        <div class="border rounded" style={{ maxWidth: "720px" }}>
+      <div className="d-flex justify-content-center mb-3">
+        <div className="border rounded" style={{ maxWidth: "720px" }}>
           <a
             href=""
             style={{ textDecoration: "none", color: "black" }}
             onClick={handlePostDetail}
           >
-            <div class="m-3 mb-3">
+            <div className="m-3 mb-3">
               <img src={anonymousIconPhoto} alt="" class="me-3" /> Anonim
             </div>
 
-            <p class="mx-3">{content}</p>
+            <p className="mx-3">{content}</p>
           </a>
 
           {/* Post Photo */}
           {images && (
-            <div class="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
+            <div className="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
               <img
-                src={postPhoto}
+                src={cat_photo}
                 alt=""
-                class="rounded img-fluid my-3 m-sm-1"
+                className="rounded img-fluid my-3 m-sm-1"
                 style={{ maxWidth: "280px", maxHeight: "200px" }}
+                onClick={() => handlePhotoShow(cat_photo)}
               />
               <img
                 src={postPhoto}
                 alt=""
-                class="rounded img-fluid"
+                className="rounded img-fluid"
                 style={{ maxWidth: "280px", maxHeight: "200px" }}
+                onClick={() => handlePhotoShow(postPhoto)}
               />
             </div>
           )}
+
+          {/* Photo Modal */}
+          <Modal show={showPhoto} onHide={() => setShowPhoto(false)} centered>
+            <Modal.Body>
+              <div className="d-flex justify-content-center">
+                <img
+                  src={selectedImage}
+                  alt=""
+                  className="img-fluid w-100 rounded"
+                  centered
+                />
+              </div>
+            </Modal.Body>
+          </Modal>
+
+          {/* Photo Modal END */}
           {/* Post Photo END */}
 
           {/* Interactions */}
-          <div class="d-flex flex-row justify-content-around mb-3">
+          <div className="d-flex flex-row justify-content-around mb-3">
             {/* Like */}
 
-            <div class="d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
               <img
                 src={isLiked ? likePostIconActive : likePostIcon}
                 alt=""
@@ -74,7 +100,7 @@ function Post({ content, totalLike, totalComment, images }) {
                 data-bs-toggle="modal"
                 data-bs-target="#users_like"
               >
-                <span class="ms-3">{totalLike}</span>
+                <span className="ms-3">{totalLike}</span>
               </a>
             </div>
 
@@ -97,9 +123,9 @@ function Post({ content, totalLike, totalComment, images }) {
 
             {/* Comment */}
             <a href="" className="compliment-link">
-              <div class="d-flex justify-content-center">
+              <div className="d-flex justify-content-center">
                 <img src={commentPostIcon} alt="" />
-                <span class="ms-2">{totalComment}</span>
+                <span className="ms-2">{totalComment}</span>
               </div>
             </a>
             {/* Comment END */}
@@ -111,9 +137,9 @@ function Post({ content, totalLike, totalComment, images }) {
               data-bs-toggle="modal"
               data-bs-target="#compliment_modal"
             >
-              <div class="d-flex justify-content-center">
+              <div className="d-flex justify-content-center">
                 <img src={complimentIconPhoto} alt="" />
-                <span class="ms-2">Şikayet Et</span>
+                <span className="ms-2">Şikayet Et</span>
               </div>
             </a>
             {/* Compliment END */}
