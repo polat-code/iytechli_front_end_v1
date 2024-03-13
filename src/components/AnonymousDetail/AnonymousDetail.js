@@ -16,6 +16,8 @@ import "./AnonymousDetail.css";
 import ComplimentModal from "../ComplimentModal/ComplimentModal";
 import CommentInput from "../CommentInput/CommentInput";
 import LikeCountModal from "../LikeCountModal/LikeCountModal";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import NotFound404 from "../NotFound404/NotFound404";
 
 const AnonymousDetail = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,8 +29,9 @@ const AnonymousDetail = () => {
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
   };
+  const token = getFromLocalStorage("_tkn");
 
-  return (
+  return token ? (
     <>
       <MainContainer>
         <Sidebar
@@ -200,6 +203,8 @@ const AnonymousDetail = () => {
         </ContentContainer>
       </MainContainer>
     </>
+  ) : (
+    <NotFound404 />
   );
 };
 

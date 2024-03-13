@@ -7,6 +7,8 @@ import "./NewAnonymousPost2.css";
 import Advertisement from "../Advertisement/Advertisement";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
+import NotFound404 from "../NotFound404/NotFound404";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
 
 const NewAnonymousPost2 = () => {
   const [postDescription, setPostDescription] = useState("");
@@ -37,7 +39,9 @@ const NewAnonymousPost2 = () => {
     navigation("/anonymous");
   };
 
-  return (
+  const token = getFromLocalStorage("_tkn");
+
+  return token ? (
     <>
       <MainContainer>
         <Sidebar
@@ -142,6 +146,8 @@ const NewAnonymousPost2 = () => {
         </ContentContainer>
       </MainContainer>
     </>
+  ) : (
+    <NotFound404 />
   );
 };
 

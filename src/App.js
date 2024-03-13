@@ -19,7 +19,9 @@ import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
 import RenewPassword from "./components/RenewPassword/RenewPassword";
 
 function App() {
+  // TODO Silinebilir burası
   // Fake data injection
+  /* 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -35,6 +37,7 @@ function App() {
     );
   }, []);
 
+  */
   return (
     <Routes>
       <Route path="/chat" element={<Chat userFullName="Özgürhan Polat" />} />

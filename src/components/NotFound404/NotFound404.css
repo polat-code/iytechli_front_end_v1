@@ -1,0 +1,35 @@
+.not-found-page {
+    text-align: center;
+    padding: 50px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .not-found-page h1 {
+    font-size: 100px;
+    color: #AD9EE9;
+  }
+  
+  .not-found-page h2 {
+    font-size: 36px;
+    color: #333;
+  }
+  
+  .not-found-page p {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .not-found-page a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #AD9EE9;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .not-found-page a:hover {
+    background-color: #AD9EE9;
+  }
+  

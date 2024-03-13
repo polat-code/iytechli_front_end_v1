@@ -22,6 +22,8 @@ const Sidebar = ({ isOpen }) => {
 
   const user = useSelector((state) => state.user.user);
 
+  // TODO Burada kullanıcı bilgilerini almak için backend e istek at.
+
   useEffect(() => {
     setName(user.name);
     setSurname(user.surname);

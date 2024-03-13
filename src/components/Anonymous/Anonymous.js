@@ -9,6 +9,8 @@ import Advertisement from "../Advertisement/Advertisement";
 import { useNavigate, useLocation } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
 import ComplimentModal from "../ComplimentModal/ComplimentModal";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import NotFound404 from "../NotFound404/NotFound404";
 
 function Anonymous() {
   // Sidebar
@@ -23,6 +25,8 @@ function Anonymous() {
   const toggleToastShow = () => {
     setToastShow(!toastShow);
   };
+
+  const token = getFromLocalStorage("_tkn");
 
   // TODO If user send a post then we have to show a toast message
   /* 
@@ -41,7 +45,7 @@ function Anonymous() {
   const newAnonymousPost = () => {
     navigation("/new-anonymous-post");
   };
-  return (
+  return token ? (
     <>
       <MainContainer>
         <Sidebar
@@ -145,6 +149,8 @@ function Anonymous() {
         </ContentContainer>
       </MainContainer>
     </>
+  ) : (
+    <NotFound404 />
   );
 }
 
