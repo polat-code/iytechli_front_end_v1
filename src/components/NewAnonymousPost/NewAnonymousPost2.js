@@ -12,7 +12,25 @@ import { getFromLocalStorage } from "../../helpers/LocalStorage";
 
 const NewAnonymousPost2 = () => {
   const [postDescription, setPostDescription] = useState("");
+  const [noteToAdmin, setNoteToAdmin] = useState("");
+  const [images, setImages] = useState({ photo1: "", photo2: "" });
   const navigation = useNavigate();
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && /image\/(jpeg|png|gif|svg)/.test(file.type)) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages({
+          ...images,
+          [event.target.id]: reader.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Lütfen JPEG, PNG veya GIF formatında bir resim seçiniz.");
+    }
+  };
 
   // Sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,7 +57,7 @@ const NewAnonymousPost2 = () => {
     navigation("/anonymous");
   };
 
-  const token = getFromLocalStorage("_tkn");
+  const token = true; //getFromLocalStorage("_tkn");
 
   return token ? (
     <>
@@ -60,15 +78,15 @@ const NewAnonymousPost2 = () => {
             toggleSidebar={toggleSidebar}
           />
           <hr style={{ margin: "0px" }}></hr>
-          <div class="d-flex flex-column flex-lg-row align-items-center">
-            <div class="mx-4 responsive-new-post-size my-4 justify-content-center">
+          <div className="d-flex flex-column flex-lg-row align-items-center">
+            <div className="mx-4 responsive-new-post-size my-4 justify-content-center">
               {/* Post Detail Input*/}
-              <div class="mb-3">
-                <label for="postDetail" class="form-label">
+              <div className="mb-3">
+                <label for="postDetail" className="form-label">
                   Post Detayı :{" "}
                 </label>
                 <textarea
-                  class="form-control"
+                  className="form-control"
                   aria-label="With textarea"
                   id="postDetail"
                   placeholder="Lütfen düşüncelerinizi yazınız..."
@@ -80,48 +98,80 @@ const NewAnonymousPost2 = () => {
               {/* Post Detail Input END*/}
 
               {/* Photo Input */}
-              <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">
+              <div className="mb-3">
+                <label htmlFor="photo1" className="form-label">
                   Fotoğraf 1 (İsteğe Bağlı) :{" "}
                 </label>
-                <input class="form-control" type="file" id="formFileMultiple" />
-              </div>
-              <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">
-                  Fotoğraf 2 (İsteğe Bağlı) :{" "}
-                </label>
-                <input class="form-control" type="file" id="formFileMultiple" />
+                <input
+                  className="form-control"
+                  type="file"
+                  id="photo1"
+                  accept="image/jpeg, image/png, image/gif"
+                  onChange={handleFileChange}
+                />
+                <div>
+                  {images.photo1 && (
+                    <img
+                      className="rounded my-2"
+                      src={images.photo1}
+                      alt="Photo 1 Preview"
+                      style={{ width: "150px", height: "150px" }}
+                    />
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="photo2" className="form-label">
+                    Fotoğraf 2 (İsteğe Bağlı) :{" "}
+                  </label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    id="photo2"
+                    accept="image/jpeg, image/png, image/gif"
+                    onChange={handleFileChange}
+                  />
+                  {images.photo2 && (
+                    <img
+                      className="rounded my-2"
+                      src={images.photo2}
+                      alt="Photo 2 Preview"
+                      style={{ width: "150px", height: "150px" }}
+                    />
+                  )}
+                </div>
               </div>
               {/* Photo Input END*/}
 
               {/* Admin Note Input*/}
-              <div class="mb-3">
-                <label for="postDetail" class="form-label">
+              <div className="mb-3">
+                <label for="postDetail" className="form-label">
                   Admine Not (İsteğe Bağlı) :{" "}
                 </label>
                 <textarea
-                  class="form-control"
+                  className="form-control"
                   aria-label="With textarea"
                   id="postDetail"
                   placeholder="Lütfen düşüncelerinizi yazınız..."
                   style={{ height: "120px" }}
+                  value={noteToAdmin}
+                  onChange={(e) => setNoteToAdmin(e.target.value)}
                 ></textarea>
               </div>
               {/* Admin Note Input END*/}
 
               {/* Save and Cancel Buttons*/}
 
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <button
                   type="button"
-                  class="btn btn-secondary p-2 px-3 me-3 mt-3"
+                  className="btn btn-secondary p-2 px-3 me-3 mt-3"
                   onClick={handleCancelButton}
                 >
                   İptal Et
                 </button>
                 <button
                   type="button"
-                  class="btn btn-success p-2 px-3 ms-3 mt-3"
+                  className="btn btn-success p-2 px-3 ms-3 mt-3"
                   onClick={handleNewPostButton}
                 >
                   Paylaş
