@@ -11,6 +11,8 @@ import ToastNotification from "../ToastNotification/ToastNotification";
 import ComplimentModal from "../ComplimentModal/ComplimentModal";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
 import NotFound404 from "../NotFound404/NotFound404";
+import { getAllPosts } from "../../helpers/postApi/postApi";
+import { decryption } from "../../helpers/encryption";
 
 function Anonymous() {
   // Sidebar
@@ -25,22 +27,33 @@ function Anonymous() {
   const toggleToastShow = () => {
     setToastShow(!toastShow);
   };
+  const [user, setUser] = useState({});
+
+  const [posts, setPosts] = useState([]);
+  const [pageNum, setPageNum] = useState(0);
+
+  useEffect(() => {
+    const userFromLocal = decryption(getFromLocalStorage("_usr"));
+    setUser(userFromLocal);
+    const fetchData = async () => {
+      try {
+        const response = await getAllPosts({
+          pageNo: pageNum,
+          pageSize: 15,
+          userId: userFromLocal.userId,
+        });
+        setPosts(response.data.data.content);
+        console.log(response.data.data.content);
+      } catch (err) {}
+    };
+    fetchData();
+  }, []);
 
   const token = getFromLocalStorage("_tkn");
 
   // TODO If user send a post then we have to show a toast message
-  /* 
-  const [showToastNotification, setShowToastNotification] = useState(false);
-
-  const location = useLocation();
-  const receivedData = location.state;
-  useEffect(() => {
-    if (receivedData.login === true) {
-      setToastShow(!toastShow);
-      delete receivedData.login;
-    }
-  });
-  */
+  /*
+   */
   // New Anonymous post navigation
   const newAnonymousPost = () => {
     navigation("/new-anonymous-post");
@@ -79,56 +92,21 @@ function Anonymous() {
               </div>
               {/* Button END */}
 
-              {/* Post 1 */}
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-                images={["image1.png", "image2.png"]}
-              />
-              {/* Post 1 END*/}
+              {/* Posts */}
+              {posts &&
+                posts.map((post, index) => {
+                  return (
+                    <Post
+                      key={index}
+                      content={post.content}
+                      images={post.photoList}
+                      totalLike={post.numberOfLikes}
+                      totalComment={post.numberOfComments}
+                    />
+                  );
+                })}
 
-              {/* Post 2 */}
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-              />
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-              />
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-                images={["image1.png", "image2.png"]}
-              />
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-              />
-              <Post
-                content={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                }
-                totalLike={15}
-                totalComment={5}
-                images={["image1.png", "image2.png"]}
-              />
-              {/* Post 2 END*/}
+              {/* Posts END*/}
             </div>
             {/* Content END */}
             <ToastNotification

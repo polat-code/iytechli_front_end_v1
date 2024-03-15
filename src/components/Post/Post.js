@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Post.css";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
@@ -18,6 +18,7 @@ function Post({ content, totalLike, totalComment, images }) {
   const [isLiked, setIsLiked] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
   };
@@ -33,7 +34,7 @@ function Post({ content, totalLike, totalComment, images }) {
   return (
     <div>
       <div className="d-flex justify-content-center mb-3">
-        <div className="border rounded" style={{ maxWidth: "720px" }}>
+        <div className="border rounded w-100" style={{ maxWidth: "720px" }}>
           <a
             href=""
             style={{ textDecoration: "none", color: "black" }}
@@ -47,22 +48,20 @@ function Post({ content, totalLike, totalComment, images }) {
           </a>
 
           {/* Post Photo */}
+
           {images && (
             <div className="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
-              <img
-                src={cat_photo}
-                alt=""
-                className="rounded img-fluid my-3 m-sm-1"
-                style={{ maxWidth: "280px", maxHeight: "200px" }}
-                onClick={() => handlePhotoShow(cat_photo)}
-              />
-              <img
-                src={postPhoto}
-                alt=""
-                className="rounded img-fluid"
-                style={{ maxWidth: "280px", maxHeight: "200px" }}
-                onClick={() => handlePhotoShow(postPhoto)}
-              />
+              {images.map((image) => {
+                return (
+                  <img
+                    src={image.image}
+                    alt=""
+                    className="rounded img-fluid"
+                    style={{ maxWidth: "280px", maxHeight: "200px" }}
+                    onClick={() => handlePhotoShow(image.image)}
+                  />
+                );
+              })}
             </div>
           )}
 
