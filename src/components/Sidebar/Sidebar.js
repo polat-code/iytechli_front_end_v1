@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profilePhoto from "../../images/Profile.svg";
 import anonimPhoto from "../../images/icons/anonim.svg";
@@ -12,7 +11,11 @@ import mekanlarPhoto from "../../images/icons/mekanlar.svg";
 import messagePhoto from "../../images/icons/mesajlarım.svg";
 import logoutPhoto from "../../images/icons/cikisyap.svg";
 import iyteCarPhoto from "../../images/icons/iyte_car_icon.svg";
-import { removeKeyFromLocalStorage } from "../../helpers/LocalStorage";
+import {
+  getFromLocalStorage,
+  removeKeyFromLocalStorage,
+} from "../../helpers/LocalStorage";
+import { decryption } from "../../helpers/encryption";
 
 const Sidebar = ({ isOpen }) => {
   const [email, setEmail] = useState("");
@@ -21,11 +24,10 @@ const Sidebar = ({ isOpen }) => {
   const navigation = useNavigate();
   const [activeElement, setActiveElement] = useState();
 
-  const user = useSelector((state) => state.user.user);
-
   // TODO Burada kullanıcı bilgilerini almak için backend e istek at.
 
   useEffect(() => {
+    const user = decryption(getFromLocalStorage("_usr"));
     setName(user.name);
     setSurname(user.surname);
     setEmail(user.email);
