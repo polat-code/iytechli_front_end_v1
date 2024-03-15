@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
 import { authenticate } from "../../helpers/authApi/authApi";
 import { setToLocalStorage } from "../../helpers/LocalStorage";
+import { encrytion } from "../../helpers/encryption";
 
 function Login() {
   const navigation = useNavigate();
@@ -48,6 +49,14 @@ function Login() {
         if (response.data.statusCode === 200) {
           // Login and save the authentication token
           setToLocalStorage("_tkn", JSON.stringify(response.data.data.token));
+          const encryptedUser = encrytion({
+            userId: response.data.data.userId,
+            name: response.data.data.name,
+            surname: response.data.data.surname,
+            email: response.data.data.email,
+          });
+          setToLocalStorage("_usr", encryptedUser);
+
           navigation("/anonymous");
         } else if (response.data.statusCode === 403) {
           // Username or password is wrong

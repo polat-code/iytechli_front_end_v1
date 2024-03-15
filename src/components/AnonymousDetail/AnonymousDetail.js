@@ -29,7 +29,7 @@ const AnonymousDetail = () => {
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
   };
-  const token = getFromLocalStorage("_tkn");
+  const token = true; // getFromLocalStorage("_tkn");
 
   return token ? (
     <>

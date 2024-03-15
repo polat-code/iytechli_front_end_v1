@@ -9,10 +9,13 @@ import { useNavigate } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
 import NotFound404 from "../NotFound404/NotFound404";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import { createPost } from "../../helpers/postApi/postApi";
+import { decryption } from "../../helpers/encryption";
 
 const NewAnonymousPost2 = () => {
   const [postDescription, setPostDescription] = useState("");
   const [noteToAdmin, setNoteToAdmin] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState({ photo1: "", photo2: "" });
   const navigation = useNavigate();
 
@@ -42,11 +45,41 @@ const NewAnonymousPost2 = () => {
   const [isNotValidPost, setIsNotValidPost] = useState(false);
   const [toastShow, setToastShow] = useState(false);
 
-  const handleNewPostButton = () => {
+  const handleNewPostButton = async () => {
     setIsNotValidPost(false);
     setToastShow(false);
     if (postDescription.length > 15) {
-      navigation("/anonymous");
+      setIsLoading(true);
+      const encUser = getFromLocalStorage("_usr");
+      const user = decryption(encUser);
+
+      const postCreationResponse = await createPost({
+        content: postDescription,
+        contentOwnerUserId: user.userId,
+        photoList: [
+          {
+            image: images.photo1 ? images.photo1 : null,
+          },
+          {
+            image: images.photo2 ? images.photo2 : null,
+          },
+        ],
+        noteToAdmin: noteToAdmin ? noteToAdmin : null,
+      });
+      if (postCreationResponse.success) {
+        if (postCreationResponse.data.statusCode === 200) {
+          //  Navigate to anonymous and give successful message
+          setTimeout(() => {
+            navigation("/anonymous");
+          }, 2000);
+        } else if (postCreationResponse.data.statusCode === 404) {
+          // Throw user not found exception
+        }
+      } else {
+        console.log(postCreationResponse.message);
+        //navigation("/");
+      }
+      setIsLoading(false);
     } else {
       setIsNotValidPost(true);
       setToastShow(true);
@@ -57,7 +90,7 @@ const NewAnonymousPost2 = () => {
     navigation("/anonymous");
   };
 
-  const token = true; //getFromLocalStorage("_tkn");
+  const token = getFromLocalStorage("_tkn");
 
   return token ? (
     <>
@@ -174,7 +207,18 @@ const NewAnonymousPost2 = () => {
                   className="btn btn-success p-2 px-3 ms-3 mt-3"
                   onClick={handleNewPostButton}
                 >
-                  Paylaş
+                  {isLoading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Yükleniyor...
+                    </>
+                  ) : (
+                    "Paylaş"
+                  )}
                 </button>
                 {isNotValidPost && (
                   <ToastNotification
