@@ -116,6 +116,9 @@ const Sidebar = ({ isOpen }) => {
     removeKeyFromLocalStorage("_usr");
     navigation("/");
   };
+  const handleProfile = () => {
+    navigation("/user-profile");
+  };
 
   return (
     <div
@@ -126,8 +129,9 @@ const Sidebar = ({ isOpen }) => {
       style={{ width: "280px" }}
     >
       <div
-        className="d-flex"
+        className="d-flex cursor-pointer"
         style={{ marginTop: "40px", marginBottom: "60px" }}
+        onClick={handleProfile}
       >
         <img
           src={profilePhoto}
