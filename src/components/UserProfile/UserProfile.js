@@ -1,16 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
 import MainContainer from "../MainContainer/MainContainer";
 import Sidebar from "../Sidebar/Sidebar";
 import ContentContainer from "../ContentContainer/ContentContainer";
 import PageTitle from "../PageTitle/PageTitle";
 import Advertisement from "../Advertisement/Advertisement";
+import { getAllInfoOfUser } from "../../helpers/userApi/userApi";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getFromLocalStorage,
+  setToLocalStorage,
+} from "../../helpers/LocalStorage";
+import { decryption, encrytion } from "../../helpers/encryption";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
-function UserProfile() {
+const UserProfile = ({}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [user, setUser] = useState();
+  const [isUnknownError, setIsUnknownError] = useState(false);
+  const [toastShow, setToastShow] = useState(false);
+  const navigation = useNavigate();
+
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+  useEffect(() => {
+    // Initialize toast messages as false
+    setIsUnknownError(false);
+    setToastShow(false);
+
+    const userFromLocal = decryption(getFromLocalStorage("_usr"));
+    const token = getFromLocalStorage("_tkn");
+    if (!userFromLocal || !token) {
+      navigation("/");
+    }
+    setUser(userFromLocal);
+    const fetchData = async () => {
+      const response = await getAllInfoOfUser(
+        location.state, // userId (dynamic)
+        userFromLocal.userId // hostId (static)
+      );
+      if (response.success) {
+        setUser({
+          name: response.data.data.name,
+          surname: response.data.data.surname,
+          telephone: response.data.data.telephone,
+          universityRole: response.data.data.universityRole,
+          email: userFromLocal.email,
+          profileStatus: response.data.data.profileStatus,
+        });
+        userFromLocal.name = response.data.data.name;
+        userFromLocal.surname = response.data.data.surname;
+      } else if (!response.success) {
+        // If token is expired then direct to login page.
+        //navigation("/");
+      } else {
+        setIsUnknownError(true);
+        setToastShow(true);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleEditProfile = () => {
+    navigation("/edit-user-profile");
   };
 
   return (
@@ -42,7 +97,7 @@ function UserProfile() {
                   </label>
                   <div className="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="role" className="normal-text">
-                      Özgürhan
+                      {user && user.name}
                     </span>
                   </div>
                 </div>
@@ -54,7 +109,7 @@ function UserProfile() {
                   </label>
                   <div className="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="role" className="normal-text">
-                      Polat
+                      {user && user.surname}
                     </span>
                   </div>
                 </div>
@@ -66,7 +121,7 @@ function UserProfile() {
                   </label>
                   <div className="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="email" className="normal-text">
-                      ozgurhanpolat@std.iyte.edu.tr
+                      {user && user.email}
                     </span>
                   </div>
                 </div>
@@ -78,7 +133,7 @@ function UserProfile() {
                   </label>
                   <div class="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="telephone" className="normal-text">
-                      05531521381
+                      {user && user.telephone}
                     </span>
                   </div>
                 </div>
@@ -86,11 +141,11 @@ function UserProfile() {
                 {/* Role Field */}
                 <div className="form-group-row flex-sm-row flex-column">
                   <label for="role" class="form-label fw-bold">
-                    Role :
+                    Universite Role :
                   </label>
                   <div class="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="role" className="normal-text">
-                      Role
+                      {user && user.universityRole}
                     </span>
                   </div>
                 </div>
@@ -98,11 +153,11 @@ function UserProfile() {
                 {/* Profile Status Dropdown */}
                 <div className="form-group-row flex-sm-row flex-column">
                   <label for="role" class="form-label fw-bold">
-                    Profile Status :
+                    Profil Durumu :
                   </label>
                   <div class="input-group justify-content-sm-start justify-content-center">
                     <span type="text" id="role" className="normal-text">
-                      Public
+                      {user && user.profileStatus}
                     </span>
                   </div>
                 </div>
@@ -110,11 +165,23 @@ function UserProfile() {
                 {/* Buttons */}
               </form>
               <div className="d-flex justify-content-end align-items-end button-space">
-                <button className="btn rounded btn-secondary me-lg-5 m-0">
-                  Edit Profile
+                <button
+                  className="btn rounded btn-secondary me-lg-5 m-0"
+                  onClick={handleEditProfile}
+                >
+                  Profili Düzenle
                 </button>
               </div>
             </div>
+            {isUnknownError && (
+              <ToastNotification
+                title={"Hata Oluştu"}
+                message={"Bilinmeyen bir hata oluştu."}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
 
             {/* Content END */}
 
@@ -127,6 +194,6 @@ function UserProfile() {
       </MainContainer>
     </>
   );
-}
+};
 
 export default UserProfile;

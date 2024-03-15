@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Signup.css";
 import loginButtonIconPhoto from "../../images/icons/login_button_icon.svg";
 import animePhoto from "../../images/anime_photo.svg";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { putUserInfo } from "../../redux/userSlice";
 import ToastNotification from "../ToastNotification/ToastNotification";

@@ -117,7 +117,8 @@ const Sidebar = ({ isOpen }) => {
     navigation("/");
   };
   const handleProfile = () => {
-    navigation("/user-profile");
+    const user = decryption(getFromLocalStorage("_usr"));
+    navigation("/user-profile", { state: user.userId });
   };
 
   return (
