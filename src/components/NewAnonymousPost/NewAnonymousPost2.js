@@ -17,6 +17,8 @@ const NewAnonymousPost2 = () => {
   const [noteToAdmin, setNoteToAdmin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState({ photo1: "", photo2: "" });
+  const [isSuccessfull, setIsSuccessfull] = useState(false);
+  const [isError, setIsError] = useState(false);
   const navigation = useNavigate();
 
   const handleFileChange = (event) => {
@@ -46,6 +48,8 @@ const NewAnonymousPost2 = () => {
   const [toastShow, setToastShow] = useState(false);
 
   const handleNewPostButton = async () => {
+    setIsSuccessfull(false);
+    setIsError(false);
     setIsNotValidPost(false);
     setToastShow(false);
     if (postDescription.length > 15) {
@@ -69,17 +73,23 @@ const NewAnonymousPost2 = () => {
       if (postCreationResponse.success) {
         if (postCreationResponse.data.statusCode === 200) {
           //  Navigate to anonymous and give successful message
+          setIsSuccessfull(true);
+          setToastShow(true);
           setTimeout(() => {
             navigation("/anonymous");
           }, 2000);
         } else if (postCreationResponse.data.statusCode === 404) {
           // Throw user not found exception
+          setIsError(true);
+          setToastShow(true);
         }
       } else {
-        console.log(postCreationResponse.message);
-        //navigation("/");
+        setIsError(true);
+        setToastShow(true);
+        setTimeout(() => {
+          navigation("/");
+        }, 2000);
       }
-      setIsLoading(false);
     } else {
       setIsNotValidPost(true);
       setToastShow(true);
@@ -91,8 +101,9 @@ const NewAnonymousPost2 = () => {
   };
 
   const token = getFromLocalStorage("_tkn");
+  const usrCredential = getFromLocalStorage("_usr");
 
-  return token ? (
+  return token && usrCredential ? (
     <>
       <MainContainer>
         <Sidebar
@@ -206,6 +217,7 @@ const NewAnonymousPost2 = () => {
                   type="button"
                   className="btn btn-success p-2 px-3 ms-3 mt-3"
                   onClick={handleNewPostButton}
+                  disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
@@ -232,6 +244,26 @@ const NewAnonymousPost2 = () => {
                   />
                 )}
               </div>
+              {isSuccessfull && (
+                <ToastNotification
+                  title={"Başarılı Post"}
+                  message={"Post Başarılı bir şekilde yayınlandı"}
+                  toastShow={toastShow}
+                  toastType={"warning"}
+                  toggleToastShow={() => setToastShow(!toastShow)}
+                />
+              )}
+              {isError && (
+                <ToastNotification
+                  title={"Şifre"}
+                  message={
+                    "Şifreler aynı değil. Lütfen aynı şifreleri giriniz!"
+                  }
+                  toastShow={toastShow}
+                  toastType={"warning"}
+                  toggleToastShow={() => setToastShow(!toastShow)}
+                />
+              )}
 
               {/* Save and Cancel Buttons END*/}
             </div>

@@ -30,22 +30,17 @@ function Post({ content, totalLike, totalComment, images }) {
   const handlePostDetail = () => {
     navigation("/anonymous-detail");
   };
-
   return (
     <div>
       <div className="d-flex justify-content-center mb-3">
-        <div className="border rounded w-100" style={{ maxWidth: "720px" }}>
-          <a
-            href=""
-            style={{ textDecoration: "none", color: "black" }}
-            onClick={handlePostDetail}
-          >
+        <div className="border w-100 rounded" style={{ maxWidth: "720px" }}>
+          <div href="" style={{ textDecoration: "none", color: "black" }}>
             <div className="m-3 mb-3">
               <img src={anonymousIconPhoto} alt="" class="me-3" /> Anonim
             </div>
 
             <p className="mx-3">{content}</p>
-          </a>
+          </div>
 
           {/* Post Photo */}
 
@@ -121,12 +116,16 @@ function Post({ content, totalLike, totalComment, images }) {
             />
 
             {/* Comment */}
-            <a href="" className="compliment-link">
+            <div
+              href=""
+              className="compliment-link cursor-pointer"
+              onClick={handlePostDetail}
+            >
               <div className="d-flex justify-content-center">
                 <img src={commentPostIcon} alt="" />
                 <span className="ms-2">{totalComment}</span>
               </div>
-            </a>
+            </div>
             {/* Comment END */}
 
             {/* Compliment */}

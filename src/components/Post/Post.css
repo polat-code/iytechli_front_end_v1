@@ -9,3 +9,7 @@
 .like-icon {
     transition: opacity 0.3s ease;
   }
+
+.cursor-pointer {
+    cursor: pointer;
+}
