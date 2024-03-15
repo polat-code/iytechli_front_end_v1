@@ -12,6 +12,7 @@ import mekanlarPhoto from "../../images/icons/mekanlar.svg";
 import messagePhoto from "../../images/icons/mesajlarım.svg";
 import logoutPhoto from "../../images/icons/cikisyap.svg";
 import iyteCarPhoto from "../../images/icons/iyte_car_icon.svg";
+import { removeKeyFromLocalStorage } from "../../helpers/LocalStorage";
 
 const Sidebar = ({ isOpen }) => {
   const [email, setEmail] = useState("");
@@ -109,6 +110,8 @@ const Sidebar = ({ isOpen }) => {
     navigation("/iyte-car");
   };
   const handleLogout = () => {
+    removeKeyFromLocalStorage("_tkn");
+    removeKeyFromLocalStorage("_usr");
     navigation("/");
   };
 

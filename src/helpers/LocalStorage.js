@@ -9,5 +9,9 @@ export const setToLocalStorage = (key, value) => {
 };
 
 export const overwriteToLocalStorage = (key, value) => {
-  localStorage.setItem(key, value);
+  window.localStorage.setItem(key, value);
+};
+
+export const removeKeyFromLocalStorage = (key) => {
+  window.localStorage.removeItem(key);
 };
