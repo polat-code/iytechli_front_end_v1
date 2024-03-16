@@ -16,6 +16,7 @@ import {
   removeKeyFromLocalStorage,
 } from "../../helpers/LocalStorage";
 import { decryption } from "../../helpers/encryption";
+import { getAllInfoOfUserByEmail } from "../../helpers/userApi/userApi";
 
 const Sidebar = ({ isOpen }) => {
   const [email, setEmail] = useState("");
@@ -24,13 +25,36 @@ const Sidebar = ({ isOpen }) => {
   const navigation = useNavigate();
   const [activeElement, setActiveElement] = useState();
 
-  // TODO Burada kullanıcı bilgilerini almak için backend e istek at.
+  // TODO Burada kullanıcı bilgilerini almak için backend e getUserById gibi bir  istek at.
 
   useEffect(() => {
     const user = decryption(getFromLocalStorage("_usr"));
-    setName(user.name);
-    setSurname(user.surname);
-    setEmail(user.email);
+    const token = getFromLocalStorage("_tkn");
+
+    if (!user && !token) {
+      navigation("/");
+    }
+
+    const fetchData = async () => {
+      const response = await getAllInfoOfUserByEmail(user.email);
+      if (response.success) {
+        if (response.data.statusCode === 200) {
+          const data = response.data.data;
+          setName(data.name);
+          setSurname(data.surname);
+          setEmail(user.email);
+        } else if (response.data.statusCode === 404) {
+          // usernotfound exception
+          console.log("User Not Found");
+        } else {
+          console.log("Kodlanmamış bir hata oluştu.");
+        }
+      } else {
+        // direct to "/" path
+        navigation("/");
+      }
+    };
+    fetchData();
     const anonymousElement = document.querySelector("#anonymous");
     setActiveElement(anonymousElement);
     anonymousElement.classList.add("active");

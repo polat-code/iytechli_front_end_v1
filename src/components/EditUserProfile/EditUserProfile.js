@@ -1,22 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./EditUserProfile.css";
 import MainContainer from "../MainContainer/MainContainer";
 import Sidebar from "../Sidebar/Sidebar";
 import ContentContainer from "../ContentContainer/ContentContainer";
 import PageTitle from "../PageTitle/PageTitle";
 import Advertisement from "../Advertisement/Advertisement";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import { decryption } from "../../helpers/encryption";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllInfoOfUser } from "../../helpers/userApi/userApi";
 
 function EditUserProfile() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigation = useNavigate();
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  const location = useLocation();
 
-  const [name, setName] = useState("Özgürhan");
-  const [surname, setSurname] = useState("Polat");
-  const [email, setEmail] = useState("ozgurhan.45@gmail.com");
-  const [telephone, setTelephone] = useState("05531521381");
-  const [profileStatus, setProfileStatus] = useState("Private");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [user, setUser] = useState();
+  const [profileStatus, setProfileStatus] = useState();
+  const [email, setEmail] = useState();
+
+  useEffect(() => {
+    const userFromLocal = decryption(getFromLocalStorage("_usr"));
+    const token = getFromLocalStorage("_tkn");
+    if (!userFromLocal || !token) {
+      navigation("/");
+    }
+    const fetchData = async () => {
+      const response = await getAllInfoOfUser(
+        location.state, // userId (dynamic)
+        userFromLocal.userId // hostId (static)
+      );
+      if (response.success) {
+        setUser({
+          name: response.data.data.name,
+          surname: response.data.data.surname,
+          telephone: response.data.data.telephone,
+          universityRole: response.data.data.universityRole,
+          email: userFromLocal.email,
+          profileStatus: response.data.data.profileStatus,
+        });
+        userFromLocal.name = response.data.data.name;
+        userFromLocal.surname = response.data.data.surname;
+      } else if (!response.success) {
+        // If token is expired then direct to login page.
+        //navigation("/");
+      } else {
+        /*
+        setIsUnknownError(true);
+        setToastShow(true);
+        */
+      }
+    };
+    fetchData();
+  });
 
   return (
     <>
@@ -50,7 +92,7 @@ function EditUserProfile() {
                     class="form-control"
                     id="name"
                     placeholder="Name"
-                    value={name}
+                    value={user && user.name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
