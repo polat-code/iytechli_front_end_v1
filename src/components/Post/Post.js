@@ -1,27 +1,56 @@
 import React, { useEffect, useState } from "react";
-import "./Post.css";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import anonymousIconPhoto from "../../images/icons/anonymous_icon.svg";
-import postPhoto from "../../images/post_photo.svg";
-import cat_photo from "../../images/cat_photo.avif";
 import likePostIcon from "../../images/icons/like_post_icon.svg";
 import likePostIconActive from "../../images/icons/heard_red.svg";
 import commentPostIcon from "../../images/icons/comment_post_icon.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
 import ComplimentModal from "../ComplimentModal/ComplimentModal";
 import LikeCountModal from "../LikeCountModal/LikeCountModal";
+import { likePost } from "../../helpers/postApi/postApi";
+import { decryption } from "../../helpers/encryption";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
 
-function Post({ content, totalLike, totalComment, images }) {
+function Post({
+  content,
+  totalLike,
+  totalComment,
+  images,
+  postUserId,
+  currentUserLikePost,
+}) {
   const navigation = useNavigate();
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(currentUserLikePost);
   const [showPhoto, setShowPhoto] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [numberOfLike, setNumberOfLike] = useState(totalLike);
+  const user = decryption(getFromLocalStorage("_usr"));
 
-  const handleLikeButton = () => {
-    setIsLiked(!isLiked);
+  useEffect(() => {
+    setIsLiked(currentUserLikePost);
+  }, [currentUserLikePost]);
+
+  const handleLikeButton = async () => {
+    const response = await likePost({
+      userId: user.userId,
+      postId: postUserId,
+    });
+
+    if (response.success) {
+      if (response.data.statusCode === 200) {
+        setIsLiked(!isLiked);
+        setNumberOfLike(isLiked ? numberOfLike - 1 : numberOfLike + 1);
+      } else if (response.data.statusCode === 404) {
+        console.log("user or post not found");
+      } else {
+        console.log("kodlanmamış bilinmeyen bir hata oluştu.");
+        console.log(response);
+      }
+    }
   };
+
   const handlePhotoShow = (image) => {
     setSelectedImage(image);
     setShowPhoto(true);
@@ -30,6 +59,7 @@ function Post({ content, totalLike, totalComment, images }) {
   const handlePostDetail = () => {
     navigation("/anonymous-detail");
   };
+
   return (
     <div>
       <div className="d-flex justify-content-center mb-3">
@@ -94,7 +124,7 @@ function Post({ content, totalLike, totalComment, images }) {
                 data-bs-toggle="modal"
                 data-bs-target="#users_like"
               >
-                <span className="ms-3">{totalLike}</span>
+                <span className="ms-3">{numberOfLike}</span>
               </a>
             </div>
 

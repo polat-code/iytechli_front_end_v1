@@ -8,7 +8,6 @@ import PageTitle from "../PageTitle/PageTitle";
 import Advertisement from "../Advertisement/Advertisement";
 import { useNavigate, useLocation } from "react-router-dom";
 import ToastNotification from "../ToastNotification/ToastNotification";
-import ComplimentModal from "../ComplimentModal/ComplimentModal";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
 import NotFound404 from "../NotFound404/NotFound404";
 import { getAllPosts } from "../../helpers/postApi/postApi";
@@ -102,6 +101,8 @@ function Anonymous() {
                       images={post.photoList}
                       totalLike={post.numberOfLikes}
                       totalComment={post.numberOfComments}
+                      postUserId={post.postId}
+                      currentUserLikePost={post.currentUserLikePost}
                     />
                   );
                 })}

@@ -18,3 +18,12 @@ export const getAllPosts = async (pages) => {
     return { success: false, message: err.message };
   }
 };
+export const likePost = async (dataWithUserIdAndPostId) => {
+  try {
+    const response = await api().post("/post/like", dataWithUserIdAndPostId);
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};
