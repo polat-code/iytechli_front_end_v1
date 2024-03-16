@@ -57,7 +57,17 @@ function Post({
   };
 
   const handlePostDetail = () => {
-    navigation("/anonymous-detail");
+    // Get anonymous detail from backend
+    navigation("/anonymous-detail", {
+      state: {
+        content,
+        totalLike,
+        totalComment,
+        images,
+        postUserId,
+        currentUserLikePost,
+      },
+    });
   };
 
   return (
@@ -80,7 +90,7 @@ function Post({
                 return (
                   <img
                     src={image.image}
-                    alt=""
+                    alt="post photo"
                     className="rounded img-fluid"
                     style={{ maxWidth: "280px", maxHeight: "200px" }}
                     onClick={() => handlePhotoShow(image.image)}
@@ -111,39 +121,20 @@ function Post({
           <div className="d-flex flex-row justify-content-around mb-3">
             {/* Like */}
 
-            <div className="d-flex justify-content-center">
+            <div
+              className="d-flex justify-content-center cursor-pointer"
+              onClick={handleLikeButton}
+            >
               <img
                 src={isLiked ? likePostIconActive : likePostIcon}
                 alt=""
-                onClick={handleLikeButton}
                 className="like-icon"
               />
-              <a
-                href=""
-                className="compliment-link"
-                data-bs-toggle="modal"
-                data-bs-target="#users_like"
-              >
-                <span className="ms-3">{numberOfLike}</span>
-              </a>
+
+              <span className="ms-2">{numberOfLike}</span>
             </div>
 
             {/* Like END */}
-            <LikeCountModal
-              fullNameList={[
-                "Özgürhan Polat",
-                "Fatih Polat",
-                "Bahar Burdar Gelioğulları",
-                "Şeyma Başlar",
-                "Ali Kerem Bahcıvanoğlu",
-                "Kadir Olurlu",
-                "Ayşenur Gül",
-                "Ayşenur Gül",
-                "Ayşenur Gül",
-                "Ayşenur Gül",
-              ]}
-              numberOfUserLike={20}
-            />
 
             {/* Comment */}
             <div

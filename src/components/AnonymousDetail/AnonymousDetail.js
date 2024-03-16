@@ -5,7 +5,7 @@ import likePostIcon from "../../images/icons/like_post_icon.svg";
 import likePostIconActive from "../../images/icons/heard_red.svg";
 import commentPostIconPhoto from "../../images/icons/comment_post_icon.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
-
+import { Modal } from "react-bootstrap";
 import MainContainer from "../MainContainer/MainContainer";
 import Sidebar from "../Sidebar/Sidebar";
 import ContentContainer from "../ContentContainer/ContentContainer";
@@ -18,17 +18,35 @@ import CommentInput from "../CommentInput/CommentInput";
 import LikeCountModal from "../LikeCountModal/LikeCountModal";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
 import NotFound404 from "../NotFound404/NotFound404";
-
+import { useLocation } from "react-router-dom";
 const AnonymousDetail = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showPhoto, setShowPhoto] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const location = useLocation();
+  const {
+    content,
+    totalLike,
+    totalComment,
+    images,
+    postUserId,
+    currentUserLikePost,
+  } = location.state;
 
   const [isLiked, setIsLiked] = useState(false);
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
   };
+
+  const handlePhotoShow = (image) => {
+    setSelectedImage(image);
+    setShowPhoto(true);
+  };
+
   const token = true; // getFromLocalStorage("_tkn");
 
   return token ? (
@@ -58,28 +76,44 @@ const AnonymousDetail = () => {
                   <div className="m-3 mb-3">
                     <img src={anonymousPhoto} alt="" className="me-3" /> Anonim
                   </div>
-                  <p className="mx-3">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Integer eget tortor a quam fermentum sagittis a a libero.
-                    Vivamus ut tincidunt nisi. Sed semper mi in libero congue
-                    pretium. Integer sapien erat, ornare quis nulla et,
-                    condimentum auctor magna.
-                  </p>
+                  <p className="mx-3">{content}</p>
                   {/* Post Photo */}
-                  <div className="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
-                    <img
-                      src={postPhoto}
-                      alt=""
-                      className="rounded img-fluid my-3 m-sm-1"
-                      style={{ maxWidth: "280px", maxHeight: "200px" }}
-                    />
-                    <img
-                      src={postPhoto}
-                      alt=""
-                      className="rounded img-fluid"
-                      style={{ maxWidth: "280px", maxHeight: "200px" }}
-                    />
-                  </div>
+                  {images && (
+                    <div className="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
+                      {images.map((image, index) => {
+                        return (
+                          <img
+                            key={index}
+                            src={image.image}
+                            alt="post photo"
+                            className="rounded img-fluid my-3 m-sm-1"
+                            style={{ maxWidth: "280px", maxHeight: "200px" }}
+                            onClick={() => handlePhotoShow(image.image)}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                  {/* Photo Modal */}
+                  <Modal
+                    show={showPhoto}
+                    onHide={() => setShowPhoto(false)}
+                    centered
+                  >
+                    <Modal.Body>
+                      <div className="d-flex justify-content-center">
+                        <img
+                          src={selectedImage}
+                          alt=""
+                          className="img-fluid w-100 rounded"
+                          centered
+                        />
+                      </div>
+                    </Modal.Body>
+                  </Modal>
+
+                  {/* Photo Modal END */}
+
                   {/* Post Photo END */}
 
                   {/* Interactions */}
@@ -93,14 +127,14 @@ const AnonymousDetail = () => {
                         alt=""
                         src={isLiked ? likePostIconActive : likePostIcon}
                       />
-                      <span className="ms-2">10</span>
+                      <span className="ms-2">{totalLike}</span>
                     </div>
                     {/* Like END */}
 
                     {/* Comment */}
                     <div className="d-flex justify-content-center">
                       <img src={commentPostIconPhoto} alt="" />
-                      <span className="ms-2">5</span>
+                      <span className="ms-2">{totalComment}</span>
                     </div>
                     {/* Comment END */}
 
