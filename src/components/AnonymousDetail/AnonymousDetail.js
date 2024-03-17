@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import anonymousPhoto from "../../images/icons/anonymous_icon.svg";
 import postPhoto from "../../images/post_photo.svg";
 import likePostIcon from "../../images/icons/like_post_icon.svg";
@@ -19,6 +19,10 @@ import LikeCountModal from "../LikeCountModal/LikeCountModal";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
 import NotFound404 from "../NotFound404/NotFound404";
 import { useLocation } from "react-router-dom";
+import { getComments } from "../../helpers/commentApi/commentApi";
+import { decryption } from "../../helpers/encryption";
+import { getPostDetailByPostId, likePost } from "../../helpers/postApi/postApi";
+
 const AnonymousDetail = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
@@ -27,20 +31,83 @@ const AnonymousDetail = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const userFromLocal = decryption(getFromLocalStorage("_usr"));
+
+  const [postDetail, setPostDetail] = useState();
+  const [comments, setComments] = useState();
+
   const location = useLocation();
-  const {
-    content,
-    totalLike,
-    totalComment,
-    images,
-    postUserId,
-    currentUserLikePost,
-  } = location.state;
+  const { postId } = location.state;
 
   const [isLiked, setIsLiked] = useState(false);
-  const handleLikeButton = () => {
-    setIsLiked(!isLiked);
+  const [numberOfLike, setNumberOfLike] = useState(0);
+  const handleLikeButton = async () => {
+    const response = await likePost({
+      userId: userFromLocal.userId,
+      postId: postId,
+    });
+
+    if (response.success) {
+      if (response.data.statusCode === 200) {
+        setIsLiked(!isLiked);
+        setNumberOfLike(isLiked ? numberOfLike - 1 : numberOfLike + 1);
+      } else if (response.data.statusCode === 404) {
+        console.log("user or post not found");
+      } else {
+        console.log("kodlanmamış bilinmeyen bir hata oluştu.");
+      }
+    }
   };
+
+  useEffect(() => {
+    // get user Info and comment Info
+
+    const fetchComments = async () => {
+      const response = await getComments({
+        userId: userFromLocal.userId,
+        postId: postId,
+      });
+      if (response.success) {
+        if (response.data.statusCode === 200) {
+          //console.log(response.data);
+          setComments(response.data.data);
+        } else if (response.data.statusCode === 404) {
+          console.log("User or post not found");
+        } else {
+          console.log("kodlanmamış bir hata oluştu.");
+        }
+      } else {
+        // Navigate to "/"
+        console.log("Bilinmeyen bir hata oluştu.");
+      }
+    };
+    fetchComments();
+
+    const fetchPostDetail = async () => {
+      const response = await getPostDetailByPostId({
+        userId: userFromLocal.userId,
+        postId: postId,
+      });
+
+      if (response.success) {
+        if (response.data.statusCode === 200) {
+          //console.log(response.data);
+          setPostDetail(response.data.data);
+          setIsLiked(response.data.data.currentUserLikePost);
+          setNumberOfLike(response.data.data.numberOfLikes);
+        } else if (response.data.statusCode === 404) {
+          console.log("User or post not found");
+        } else {
+          console.log("kodlanmamış bir hata oluştu.");
+        }
+      } else {
+        // Navigate to "/"
+        console.log("Bilinmeyen bir hata oluştu.");
+      }
+    };
+
+    fetchPostDetail();
+  }, []);
 
   const handlePhotoShow = (image) => {
     setSelectedImage(image);
@@ -72,15 +139,18 @@ const AnonymousDetail = () => {
             <div className="mx-4">
               {/* Post */}
               <div className="d-flex justify-content-center mb-3 mt-3">
-                <div className="border rounded" style={{ maxWidth: "720px" }}>
+                <div
+                  className="border rounded responsive-post-detail-container"
+                  style={{ maxWidth: "720px" }}
+                >
                   <div className="m-3 mb-3">
                     <img src={anonymousPhoto} alt="" className="me-3" /> Anonim
                   </div>
-                  <p className="mx-3">{content}</p>
+                  <p className="mx-3">{postDetail && postDetail.content}</p>
                   {/* Post Photo */}
-                  {images && (
+                  {postDetail && postDetail.photoList && (
                     <div className="d-flex flex-column flex-sm-row align-items-center my-post-photo-flex-container mb-4 ">
-                      {images.map((image, index) => {
+                      {postDetail.photoList.map((image, index) => {
                         return (
                           <img
                             key={index}
@@ -127,14 +197,16 @@ const AnonymousDetail = () => {
                         alt=""
                         src={isLiked ? likePostIconActive : likePostIcon}
                       />
-                      <span className="ms-2">{totalLike}</span>
+                      <span className="ms-2">{numberOfLike}</span>
                     </div>
                     {/* Like END */}
 
                     {/* Comment */}
                     <div className="d-flex justify-content-center">
                       <img src={commentPostIconPhoto} alt="" />
-                      <span className="ms-2">{totalComment}</span>
+                      <span className="ms-2">
+                        {postDetail && postDetail.numberOfComments}
+                      </span>
                     </div>
                     {/* Comment END */}
 
@@ -194,33 +266,24 @@ const AnonymousDetail = () => {
                   <CommentInput />
                   {/* Comment Input END*/}
 
-                  {/* Comment 1 */}
-                  <Comment
-                    sharedTime={"1 saat"}
-                    userName={"Özgürhan"}
-                    userSurname={"Polat"}
-                    comment={
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget tortor a quam fermentum sagittis a a libero. Vivamus ut tincidunt nisi. Sed semper mi in libero congue pretium. Integer sapien erat, ornare quis nulla et, condimentum auctor magna."
-                    }
-                    likeCount={25}
-                    dislikeCount={8}
-                  />
+                  {/* Comments */}
+                  {comments &&
+                    comments.map((comment) => {
+                      return (
+                        <Comment
+                          sharedTime={"1 saat önce"}
+                          userName={comment.commentOwnerName}
+                          userSurname={comment.commentOwnerSurname}
+                          comment={comment.commentContent}
+                          likeCount={comment.numberOfLikes}
+                          dislikeCount={comment.numberOfDislikes}
+                          userDislikeComment={comment.userDislikeComment}
+                          userLikeComment={comment.userLikeComment}
+                        />
+                      );
+                    })}
 
-                  {/* Comment 1 END*/}
-
-                  {/* Comment 2 */}
-                  <Comment
-                    sharedTime={"1 saat"}
-                    userName={"Kadir"}
-                    userSurname={"Polat"}
-                    comment={
-                      "Bu yorumu çok seviyorum. İnşallah iyi bir durumda olan bir kişi bu yorumu beğenir :)"
-                    }
-                    likeCount={25}
-                    dislikeCount={8}
-                  />
-
-                  {/* Comment 2 END*/}
+                  {/* Comments END*/}
                 </div>
               </div>
               {/* Post END*/}

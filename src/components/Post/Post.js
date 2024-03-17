@@ -17,8 +17,8 @@ function Post({
   totalLike,
   totalComment,
   images,
-  postUserId,
   currentUserLikePost,
+  postId,
 }) {
   const navigation = useNavigate();
 
@@ -35,7 +35,7 @@ function Post({
   const handleLikeButton = async () => {
     const response = await likePost({
       userId: user.userId,
-      postId: postUserId,
+      postId: postId,
     });
 
     if (response.success) {
@@ -59,14 +59,7 @@ function Post({
   const handlePostDetail = () => {
     // Get anonymous detail from backend
     navigation("/anonymous-detail", {
-      state: {
-        content,
-        totalLike,
-        totalComment,
-        images,
-        postUserId,
-        currentUserLikePost,
-      },
+      state: { postId: postId },
     });
   };
 

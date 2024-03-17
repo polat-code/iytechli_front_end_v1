@@ -42,7 +42,7 @@ function Anonymous() {
           userId: userFromLocal.userId,
         });
         setPosts(response.data.data.content);
-        console.log(response.data.data.content);
+        //console.log(response.data.data.content);
       } catch (err) {}
     };
     fetchData();
@@ -101,7 +101,7 @@ function Anonymous() {
                       images={post.photoList}
                       totalLike={post.numberOfLikes}
                       totalComment={post.numberOfComments}
-                      postUserId={post.postId}
+                      postId={post.postId}
                       currentUserLikePost={post.currentUserLikePost}
                     />
                   );
