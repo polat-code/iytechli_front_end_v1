@@ -38,6 +38,7 @@ const AnonymousDetail = () => {
 
   const location = useLocation();
   const { postId } = location.state;
+  const [commentShowTrigger, setCommentShowTrigger] = useState(false);
 
   const [isLiked, setIsLiked] = useState(false);
   const [numberOfLike, setNumberOfLike] = useState(0);
@@ -107,14 +108,15 @@ const AnonymousDetail = () => {
     };
 
     fetchPostDetail();
-  }, []);
+    setCommentShowTrigger(false);
+  }, [postId, commentShowTrigger]);
 
   const handlePhotoShow = (image) => {
     setSelectedImage(image);
     setShowPhoto(true);
   };
 
-  const token = true; // getFromLocalStorage("_tkn");
+  const token = getFromLocalStorage("_tkn");
 
   return token ? (
     <>
@@ -263,7 +265,10 @@ const AnonymousDetail = () => {
                   {/* Like count Modal END*/}
 
                   {/* Comment Input */}
-                  <CommentInput />
+                  <CommentInput
+                    postId={postId}
+                    setCommentShowTrigger={setCommentShowTrigger}
+                  />
                   {/* Comment Input END*/}
 
                   {/* Comments */}

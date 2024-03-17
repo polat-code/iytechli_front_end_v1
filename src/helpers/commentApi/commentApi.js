@@ -9,3 +9,12 @@ export const getComments = async (dataWithUserIdAndPostId) => {
     return { success: false, message: err.message };
   }
 };
+export const createComment = async (data) => {
+  try {
+    const response = await api().post("/comment", data);
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};
