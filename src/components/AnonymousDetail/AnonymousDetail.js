@@ -22,8 +22,11 @@ import { useLocation } from "react-router-dom";
 import { getComments } from "../../helpers/commentApi/commentApi";
 import { decryption } from "../../helpers/encryption";
 import { getPostDetailByPostId, likePost } from "../../helpers/postApi/postApi";
+import { useNavigate } from "react-router-dom";
 
 const AnonymousDetail = () => {
+  const navigation = useNavigate();
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -32,12 +35,18 @@ const AnonymousDetail = () => {
   };
 
   const userFromLocal = decryption(getFromLocalStorage("_usr"));
-
+  const token = getFromLocalStorage("_tkn");
+  if (!userFromLocal || !token) {
+    navigation("/");
+  }
+  const { postId } = location.state || {};
+  if (!postId) {
+    console.log("Hello");
+  }
   const [postDetail, setPostDetail] = useState();
   const [comments, setComments] = useState();
+  const [postDetailUserLikes, setPostDetailUserLikes] = useState();
 
-  const location = useLocation();
-  const { postId } = location.state;
   const [commentShowTrigger, setCommentShowTrigger] = useState(false);
 
   const [isLiked, setIsLiked] = useState(false);
@@ -96,6 +105,7 @@ const AnonymousDetail = () => {
           setPostDetail(response.data.data);
           setIsLiked(response.data.data.currentUserLikePost);
           setNumberOfLike(response.data.data.numberOfLikes);
+          setPostDetailUserLikes(response.data.data.postDetailUserLikes);
         } else if (response.data.statusCode === 404) {
           console.log("User or post not found");
         } else {
@@ -109,14 +119,12 @@ const AnonymousDetail = () => {
 
     fetchPostDetail();
     setCommentShowTrigger(false);
-  }, [postId, commentShowTrigger]);
+  }, [postId, commentShowTrigger, numberOfLike]);
 
   const handlePhotoShow = (image) => {
     setSelectedImage(image);
     setShowPhoto(true);
   };
-
-  const token = getFromLocalStorage("_tkn");
 
   return token ? (
     <>
@@ -239,7 +247,7 @@ const AnonymousDetail = () => {
                     data-bs-target="#users_like"
                   >
                     <p className="fs-6 m-4">
-                      <span className="fw-bold">10 </span>
+                      <span className="fw-bold">{numberOfLike + " "}</span>
                       kişi postu beğendi
                     </p>
                   </a>
@@ -247,19 +255,8 @@ const AnonymousDetail = () => {
 
                   {/* Like count Modal */}
                   <LikeCountModal
-                    fullNameList={[
-                      "Özgürhan Polat",
-                      "Fatih Polat",
-                      "Bahar Burdar Gelioğulları",
-                      "Şeyma Başlar",
-                      "Ali Kerem Bahcıvanoğlu",
-                      "Kadir Olurlu",
-                      "Ayşenur Gül",
-                      "Ayşenur Gül",
-                      "Ayşenur Gül",
-                      "Ayşenur Gül",
-                    ]}
-                    numberOfUserLike={20}
+                    userLikesData={postDetailUserLikes}
+                    numberOfUserLike={numberOfLike}
                   />
 
                   {/* Like count Modal END*/}

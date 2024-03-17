@@ -3,7 +3,7 @@ import "./LikeCountModalUser.css";
 import userIconPhoto from "../../images/icons/user_icon.svg";
 import commentModalIconPhoto from "../../images/icons/comment_modal_icon.svg";
 
-function LikeCountModalUser({ fullName }) {
+function LikeCountModalUser({ fullName, userId }) {
   return (
     <div className="user-like-container">
       <a href="" className="modal-link">

@@ -2,7 +2,7 @@ import React from "react";
 import "./LikeCountModal.css";
 import LikeCountModalUser from "../LikeCountModalUser/LikeCountModalUser";
 
-const LikeCountModal = ({ fullNameList, numberOfUserLike }) => {
+const LikeCountModal = ({ userLikesData, numberOfUserLike }) => {
   return (
     <div
       className="modal fade"
@@ -35,11 +35,15 @@ const LikeCountModal = ({ fullNameList, numberOfUserLike }) => {
             {/* Users */}
             <div className="users">
               {/* User List */}
-              {fullNameList &&
-                fullNameList.map((fullName) => {
+              {userLikesData &&
+                userLikesData.map((userData) => {
                   return (
                     <>
-                      <LikeCountModalUser fullName={fullName} /> <hr />
+                      <LikeCountModalUser
+                        fullName={userData.name + " " + userData.surname}
+                        userId={userLikesData.userId}
+                      />{" "}
+                      <hr />
                     </>
                   );
                 })}
@@ -52,7 +56,7 @@ const LikeCountModal = ({ fullNameList, numberOfUserLike }) => {
           {/* Modal Footer */}
           <div className="modal-footer">
             <p>
-              <span className="fw-bold">{numberOfUserLike}</span>
+              <span className="fw-bold">{numberOfUserLike + " "}</span>
               kişi postu beğendi
             </p>
           </div>

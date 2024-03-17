@@ -81,26 +81,26 @@ const CommentInput = ({ postId, setCommentShowTrigger }) => {
           ) : (
             "Yorum Yap"
           )}
+          {isSuccessfull && (
+            <ToastNotification
+              title={"Başarılı Yorum"}
+              message={"Başarılı bir şekilde yorum yapıldı."}
+              toastShow={toastShow}
+              toastType={"success"}
+              toggleToastShow={() => setToastShow(!toastShow)}
+            />
+          )}
+          {isNotValidCommentLength && (
+            <ToastNotification
+              title={"Yorum uzunluğu hatası"}
+              message={"Lütfen en az 10 karakterden oluşan bir yorum yazınız."}
+              toastShow={toastShow}
+              toastType={"warning"}
+              toggleToastShow={() => setToastShow(!toastShow)}
+            />
+          )}
         </button>
       </div>
-      {isNotValidCommentLength && (
-        <ToastNotification
-          title={"Yorum uzunluğu hatası"}
-          message={"Lütfen en az 10 karakterden oluşan bir yorum yazınız."}
-          toastShow={toastShow}
-          toastType={"warning"}
-          toggleToastShow={() => setToastShow(!toastShow)}
-        />
-      )}
-      {isSuccessfull && (
-        <ToastNotification
-          title={"Başarılı Yorum"}
-          message={"Başarılı bir şekilde yorum yapıldı."}
-          toastShow={toastShow}
-          toastType={"success"}
-          toggleToastShow={() => setToastShow(!toastShow)}
-        />
-      )}
     </div>
   );
 };
