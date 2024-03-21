@@ -2,7 +2,8 @@ import axios from "axios";
 // get jwt from
 import { getFromLocalStorage } from "../LocalStorage";
 
-const baseAppUrl = "http://localhost:8080/api/v1";
+const baseAppUrl =
+  "https://iytechli-back-end-76901cbca88c.herokuapp.com/api/v1";
 
 export const api = () => {
   let token = getFromLocalStorage("_tkn");
