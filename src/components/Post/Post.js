@@ -11,6 +11,7 @@ import LikeCountModal from "../LikeCountModal/LikeCountModal";
 import { likePost } from "../../helpers/postApi/postApi";
 import { decryption } from "../../helpers/encryption";
 import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import PostComplimentModal from "../PostComplimentModal/PostComplimentModal";
 
 function Post({
   content,
@@ -147,7 +148,7 @@ function Post({
               href=""
               className="compliment-link"
               data-bs-toggle="modal"
-              data-bs-target="#compliment_modal"
+              data-bs-target="#post_compliment_modal"
             >
               <div className="d-flex justify-content-center">
                 <img src={complimentIconPhoto} alt="" />
@@ -157,7 +158,7 @@ function Post({
             {/* Compliment END */}
 
             {/* Compliment Module*/}
-            <ComplimentModal />
+            <PostComplimentModal userId={user.userId} postId={postId} />
             {/* Compliment Module END*/}
           </div>
           {/* Interactions END */}

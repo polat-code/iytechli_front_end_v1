@@ -6,8 +6,12 @@ import commentLikeIconPhotoActive from "../../images/icons/comment_like_icon_act
 import commentDislikeIconPhoto from "../../images/icons/comment_dislike_icon.svg";
 import commentDislikeIconPhotoActive from "../../images/icons/comment_dislike_icon_active.svg";
 import complimentIconPhoto from "../../images/icons/sikayet_et.svg";
+import CommentComplimentModal from "../CommentComplimentModal/CommentComplimentModal";
+import { getFromLocalStorage } from "../../helpers/LocalStorage";
+import { decryption } from "../../helpers/encryption";
 
 const Comment = ({
+  commentId,
   sharedTime,
   userName,
   userSurname,
@@ -24,6 +28,7 @@ const Comment = ({
   const handleCommentLikeIcon = () => {
     setIsLiked(!isLiked);
   };
+  const userFromLocal = decryption(getFromLocalStorage("_usr"));
 
   return (
     <div className="border-bottom border-top rounded">
@@ -77,17 +82,21 @@ const Comment = ({
         {/* Dislike END */}
 
         {/* Compliment */}
-        <a
-          href=""
+        <div
           className="compliment-link"
           data-bs-toggle="modal"
-          data-bs-target="#compliment_modal"
+          data-bs-target="#comment_compliment_modal"
         >
           <div className="d-flex justify-content-center">
             <img src={complimentIconPhoto} alt="" />
             <span className="ms-2">Şikayet Et</span>
           </div>
-        </a>
+        </div>
+
+        <CommentComplimentModal
+          userId={userFromLocal.userId}
+          commentId={commentId}
+        />
         {/* Compliment END */}
       </div>
       {/* Interactions END */}

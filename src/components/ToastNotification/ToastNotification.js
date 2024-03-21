@@ -9,6 +9,16 @@ const ToastNotification = ({
   toggleToastShow,
   toastType,
 }) => {
+  const getBodyColor = (type) => {
+    switch (type) {
+      case "success":
+        return "white";
+      case "warning":
+        return "dark";
+      default:
+        return "white"; // Default color
+    }
+  };
   return (
     <>
       <ToastContainer position="top-center">
@@ -28,7 +38,9 @@ const ToastNotification = ({
             />
             <strong className="me-auto">{title}</strong>
           </Toast.Header>
-          <Toast.Body>{message}</Toast.Body>
+          <Toast.Body style={{ color: getBodyColor(toastType) }}>
+            {message}
+          </Toast.Body>
         </Toast>
       </ToastContainer>
     </>

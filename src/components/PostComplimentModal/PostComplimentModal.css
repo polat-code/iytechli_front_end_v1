@@ -1,0 +1,9 @@
+
+.form-group-row label {
+    flex:0 0 36% !important;
+}
+@media (min-width: 520px) {
+    .form-group-row label {
+        flex:0 0 35% !important;
+    }
+}

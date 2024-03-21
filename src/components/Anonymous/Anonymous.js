@@ -49,6 +49,7 @@ function Anonymous() {
   }, []);
 
   const token = getFromLocalStorage("_tkn");
+  const localUserData = getFromLocalStorage("_usr");
 
   // TODO If user send a post then we have to show a toast message
   /*
@@ -57,7 +58,7 @@ function Anonymous() {
   const newAnonymousPost = () => {
     navigation("/new-anonymous-post");
   };
-  return token ? (
+  return token && localUserData ? (
     <>
       <MainContainer>
         <Sidebar

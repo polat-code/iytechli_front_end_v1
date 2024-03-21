@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import anonymousPhoto from "../../images/icons/anonymous_icon.svg";
-import postPhoto from "../../images/post_photo.svg";
 import likePostIcon from "../../images/icons/like_post_icon.svg";
 import likePostIconActive from "../../images/icons/heard_red.svg";
 import commentPostIconPhoto from "../../images/icons/comment_post_icon.svg";
@@ -23,9 +22,21 @@ import { getComments } from "../../helpers/commentApi/commentApi";
 import { decryption } from "../../helpers/encryption";
 import { getPostDetailByPostId, likePost } from "../../helpers/postApi/postApi";
 import { useNavigate } from "react-router-dom";
+import PostComplimentModal from "../PostComplimentModal/PostComplimentModal";
 
 const AnonymousDetail = () => {
   const navigation = useNavigate();
+
+  const userFromLocalStorage = getFromLocalStorage("_usr");
+  const userFromLocal = userFromLocalStorage
+    ? decryption(userFromLocalStorage)
+    : null;
+  const token = getFromLocalStorage("_tkn");
+
+  if (!userFromLocal || !token) {
+    navigation("/");
+  }
+
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
@@ -34,11 +45,6 @@ const AnonymousDetail = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const userFromLocal = decryption(getFromLocalStorage("_usr"));
-  const token = getFromLocalStorage("_tkn");
-  if (!userFromLocal || !token) {
-    navigation("/");
-  }
   const { postId } = location.state || {};
   if (!postId) {
     console.log("Hello");
@@ -71,6 +77,10 @@ const AnonymousDetail = () => {
 
   useEffect(() => {
     // get user Info and comment Info
+    if (!userFromLocal || !token) {
+      navigation("/");
+      return;
+    }
 
     const fetchComments = async () => {
       const response = await getComments({
@@ -126,14 +136,10 @@ const AnonymousDetail = () => {
     setShowPhoto(true);
   };
 
-  return token ? (
+  return token && userFromLocal ? (
     <>
       <MainContainer>
-        <Sidebar
-          name={"Özgürhan"}
-          surname={"Polat"}
-          email={"ozgurhan.45@gmail.com"}
-        />
+        <Sidebar />
 
         <div
           classNameName="vertical-line"
@@ -224,7 +230,7 @@ const AnonymousDetail = () => {
                     <a
                       className="compliment-link custom-cursor"
                       data-bs-toggle="modal"
-                      data-bs-target="#compliment_modal"
+                      data-bs-target="#post_compliment_modal"
                     >
                       <div className="d-flex justify-content-center">
                         <img src={complimentIconPhoto} alt="" />
@@ -236,7 +242,10 @@ const AnonymousDetail = () => {
                   {/* Interactions END */}
 
                   {/* Compliment Modal */}
-                  <ComplimentModal />
+                  <PostComplimentModal
+                    userId={userFromLocal.userId}
+                    postId={postId}
+                  />
                   {/* Compliment Modal END */}
 
                   {/* Like count */}
@@ -273,6 +282,7 @@ const AnonymousDetail = () => {
                     comments.map((comment) => {
                       return (
                         <Comment
+                          commentId={comment.commentId}
                           sharedTime={"1 saat önce"}
                           userName={comment.commentOwnerName}
                           userSurname={comment.commentOwnerSurname}
