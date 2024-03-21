@@ -106,12 +106,7 @@ const NewAnonymousPost2 = () => {
   return token && usrCredential ? (
     <>
       <MainContainer>
-        <Sidebar
-          email={"ozgurhanpolat@std.iyte.edu.tr"}
-          name={"Özgürhan"}
-          surname={"Polat"}
-          isOpen={isSidebarOpen}
-        />
+        <Sidebar isOpen={isSidebarOpen} />
         <div
           className="vertical-line"
           style={{ width: "2px", backgroundColor: "#F5F5F5" }}

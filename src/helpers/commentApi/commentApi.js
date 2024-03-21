@@ -18,3 +18,27 @@ export const createComment = async (data) => {
     return { success: false, message: err.message };
   }
 };
+export const likeComment = async (dataWithCommentIdAndUserId) => {
+  try {
+    const response = await api().post(
+      "/comment/like",
+      dataWithCommentIdAndUserId
+    );
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};
+export const dislikeComment = async (dataWithCommentIdAndUserId) => {
+  try {
+    const response = await api().post(
+      "/comment/dislike",
+      dataWithCommentIdAndUserId
+    );
+    return { success: true, data: response.data };
+  } catch (err) {
+    // Something happened in setting up the request that triggered an Error
+    return { success: false, message: err.message };
+  }
+};

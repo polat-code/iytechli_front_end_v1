@@ -87,6 +87,7 @@ const AnonymousDetail = () => {
         userId: userFromLocal.userId,
         postId: postId,
       });
+      console.log(response);
       if (response.success) {
         if (response.data.statusCode === 200) {
           //console.log(response.data);
@@ -279,18 +280,20 @@ const AnonymousDetail = () => {
 
                   {/* Comments */}
                   {comments &&
-                    comments.map((comment) => {
+                    comments.map((comment, key) => {
                       return (
                         <Comment
+                          key={key}
                           commentId={comment.commentId}
-                          sharedTime={"1 saat önce"}
-                          userName={comment.commentOwnerName}
-                          userSurname={comment.commentOwnerSurname}
+                          sharedTime={"1 saat"}
+                          commentOwnerName={comment.commentOwnerName}
+                          commentOwnerSurname={comment.commentOwnerSurname}
                           comment={comment.commentContent}
                           likeCount={comment.numberOfLikes}
                           dislikeCount={comment.numberOfDislikes}
-                          userDislikeComment={comment.userDislikeComment}
-                          userLikeComment={comment.userLikeComment}
+                          isUserLikeComment={comment.userLikeComment}
+                          isUserDislikeComment={comment.userDislikeComment}
+                          commentOwnerUserId={comment.commentOwnerUserId}
                         />
                       );
                     })}
