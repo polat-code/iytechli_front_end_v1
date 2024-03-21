@@ -153,7 +153,7 @@ const AnonymousDetail = () => {
           {/* Main */}
           <div className="d-flex flex-column flex-lg-row justify-content-lg-around">
             {/* Content */}
-            <div className="mx-4">
+            <div className="mx-2">
               {/* Post */}
               <div className="d-flex justify-content-center mb-3 mt-3">
                 <div

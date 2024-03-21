@@ -78,7 +78,7 @@ function Anonymous() {
           {/* Main */}
           <div className="d-flex flex-column flex-lg-row justify-content-lg-around">
             {/* Content */}
-            <div class="mx-4">
+            <div class="mx-2">
               {/* Button */}
               <div class="d-flex justify-content-end m-3">
                 <a
