@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "./CommentComplimentModal.css";
 import { saveCommentCompliment } from "../../helpers/complimentApi/complimentApi";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
-const CommentComplimentModal = ({ userId, commentId, setIsModalOpen }) => {
+const CommentComplimentModal = ({ userId, commentId }) => {
   const [selectedReason, setSelectedReason] = useState("");
   const [complimentDescription, setComplimentDescription] = useState("");
+  const [isSuccessfull, setIsSuccessfull] = useState();
+  const [isError, setIsError] = useState();
+  const [toastShow, setToastShow] = useState();
 
-  const handleCommentCompliment = () => {
-    const response = saveCommentCompliment({
+  const handleCommentCompliment = async () => {
+    setIsSuccessfull(false);
+    setIsError(false);
+    setToastShow(false);
+    const response = await saveCommentCompliment({
       userId: userId,
       commentId: commentId,
       reportReason: selectedReason,
@@ -15,13 +22,16 @@ const CommentComplimentModal = ({ userId, commentId, setIsModalOpen }) => {
     });
     if (response.success) {
       if (response.data.statusCode === 200) {
-        setIsModalOpen(false);
+        setIsSuccessfull(true);
         // Success message
       } else if (response.data.statusCode === 404) {
         // user or comment not Found.
+        setIsError(true);
+        console.log("There is an error in post compliment");
       } else {
         // Kodlanamış hata.
       }
+      setToastShow(true);
     } else {
       console.log("There is an error");
     }
@@ -50,6 +60,27 @@ const CommentComplimentModal = ({ userId, commentId, setIsModalOpen }) => {
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
+
+            {isSuccessfull && (
+              <ToastNotification
+                title={"Başarılı Şikayet"}
+                message={
+                  "Şikayetiniz başarılı bir şekilde kaydedildi.Burayı kapatabilirsiniz."
+                }
+                toastShow={toastShow}
+                toastType={"success"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
+            {isError && (
+              <ToastNotification
+                title={"Hata"}
+                message={"Bir hata ile karşılaşıldı. "}
+                toastShow={toastShow}
+                toastType={"warning"}
+                toggleToastShow={() => setToastShow(!toastShow)}
+              />
+            )}
           </div>
           {/* Modal Header END */}
 
@@ -68,9 +99,24 @@ const CommentComplimentModal = ({ userId, commentId, setIsModalOpen }) => {
                     id="profileStatus"
                     onChange={(e) => setSelectedReason(e.target.value)}
                   >
-                    <option selected>Choose...</option>
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
+                    <option selected value="INAPPROPRIATE">
+                      Uygunsuz İçerik
+                    </option>
+                    <option value="HARASSMENT">Taciz ve Zorbalık</option>
+                    <option value="HATE_SPEECH">Nefret Söylemi</option>
+                    <option value="MISINFORMATION">
+                      Yanıltıcı ve Yanlış Bilgi
+                    </option>
+                    <option value="COPYRIGHT">Telif Hakkı İhlali</option>
+                    <option value="PRIVACY">
+                      Özel Bilgilerin Paylaşılması
+                    </option>
+                    <option value="SPAM">Spam veya Reklam</option>
+                    <option value="HEALTH_MISINFORMATION">
+                      Sağlıkla İlgili Yanlış Bilgilendirme
+                    </option>
+                    <option value="THREAT">Başkalarını Tehdit Etme</option>
+                    <option value="DRUGS">İllegal Madde Kullanımı</option>
                   </select>
                 </div>
               </div>
@@ -101,7 +147,7 @@ const CommentComplimentModal = ({ userId, commentId, setIsModalOpen }) => {
                 <button
                   className="btn btn-primary"
                   onClick={handleCommentCompliment}
-                  type="button"
+                  type="reset"
                 >
                   Gönder
                 </button>

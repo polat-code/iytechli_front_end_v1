@@ -93,8 +93,9 @@ const PostComplimentModal = ({ userId, postId }) => {
                     id="profileStatus"
                     onChange={(e) => setReportReason(e.target.value)}
                   >
-                    <option selected>Choose...</option>
-                    <option value="INAPPROPRIATE">Uygunsuz İçerik</option>
+                    <option selected value="INAPPROPRIATE">
+                      Uygunsuz İçerik
+                    </option>
                     <option value="HARASSMENT">Taciz ve Zorbalık</option>
                     <option value="HATE_SPEECH">Nefret Söylemi</option>
                     <option value="MISINFORMATION">
