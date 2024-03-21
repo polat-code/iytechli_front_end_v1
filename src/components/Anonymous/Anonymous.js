@@ -41,12 +41,12 @@ function Anonymous() {
           pageSize: 15,
           userId: userFromLocal.userId,
         });
-        setPosts(response.data.data.content);
+        setPosts((prevPosts) => [...prevPosts, ...response.data.data.content]);
         //console.log(response.data.data.content);
       } catch (err) {}
     };
     fetchData();
-  }, []);
+  }, [pageNum]);
 
   const token = getFromLocalStorage("_tkn");
   const localUserData = getFromLocalStorage("_usr");
@@ -107,6 +107,14 @@ function Anonymous() {
                     />
                   );
                 })}
+              <div className="d-flex flex-row justify-content-center mb-4">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setPageNum(pageNum + 1)}
+                >
+                  Daha Fazla Yükle
+                </button>
+              </div>
 
               {/* Posts END*/}
             </div>
