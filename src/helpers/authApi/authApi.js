@@ -3,7 +3,7 @@ import axios from "axios";
 import { getFromLocalStorage } from "../LocalStorage";
 
 const baseAppUrl =
-  "https://iytechli-back-end-76901cbca88c.herokuapp.com/api/v1";
+  "https://iytechli-backend-66fbcbdd0226.herokuapp.com//api/v1";
 
 export const api = () => {
   let token = getFromLocalStorage("_tkn");
