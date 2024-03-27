@@ -138,56 +138,56 @@ const Sidebar = ({ isOpen }) => {
 
       <ul className="mynav nav nav-pills flex-column mb-auto">
         <li className="nav-item mb-3">
-          <a id="anonymous" href="#" className="" onClick={handleAnonymous}>
+          <a id="anonymous" href="" className="" onClick={handleAnonymous}>
             <img src={anonimPhoto} className="p-1" alt="" />
             <span className="ms-2">Anonimler</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="iytecar" href="#" className="" onClick={handleIyteCar}>
+          <a id="iytecar" href="" className="" onClick={handleIyteCar}>
             <img src={iyteCarPhoto} className="p-1" alt="" />
             <span className="ms-2">İyte Araç</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="teacher" href="#" className="" onClick={handleTeacher}>
+          <a id="teacher" href="" className="" onClick={handleTeacher}>
             <img src={hocalarPhoto} className="p-1" alt="" />
             <span className="ms-2">Hocalar</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="lesson" href="#" className="" onClick={handleLesson}>
+          <a id="lesson" href="" className="" onClick={handleLesson}>
             <img src={lessonsPhoto} className="p-1" alt="" />
             <span className="ms-2">Dersler</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="community" href="#" className="" onClick={handleCommunity}>
+          <a id="community" href="" className="" onClick={handleCommunity}>
             <img src={topluluklarPhoto} className="p-1" alt="" />
             <span className="ms-2">Topluluklar</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="department" href="#" className="" onClick={handleDepartment}>
+          <a id="department" href="" className="" onClick={handleDepartment}>
             <img src={bolumlerPhoto} className="p-1" alt="" />
             <span className="ms-2">Bölümler</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="place" href="#" className="" onClick={handlePlace}>
+          <a id="place" href="" className="" onClick={handlePlace}>
             <img src={mekanlarPhoto} className="p-1" alt="" />
             <span className="ms-2">Mekanlar</span>
           </a>
         </li>
         <li className="nav-item mb-3">
-          <a id="message" href="#" className="" onClick={handleMessage}>
+          <a id="message" href="" className="" onClick={handleMessage}>
             <img src={messagePhoto} className="p-1" alt="" />
             <span className="ms-2">Mesajlarım</span>
           </a>
         </li>
 
         <li className="nav-item mb-3">
-          <a id="logout" href="#" className="" onClick={handleLogout}>
+          <a id="logout" href="" className="" onClick={handleLogout}>
             <img src={logoutPhoto} className="p-1" alt="" />
             <span className="ms-2">Çıkış Yap</span>
           </a>
