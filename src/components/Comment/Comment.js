@@ -25,6 +25,8 @@ const Comment = ({
     setIsLiked(!isLiked);
   };
 
+  // Normal Interface Test
+
   return (
     <div className="border-bottom border-top rounded">
       {/* Comment Title */}
