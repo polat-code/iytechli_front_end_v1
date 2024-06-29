@@ -1,3 +1,4 @@
-# Remaining Point
+# İytechli -> Özelleştirilmiş Sosyal Medya Platformun Frontend'i.
 
-ChatMessage doesn't work properly. Each message should be separeted in separte component such as current user message component and other user message component.
+# Demo Video
+<a href="https://www.youtube.com/watch?v=-gtLyaYgsGM">Video Linki</a>
